@@ -1,0 +1,26 @@
+/* Agreement Portal Styling */
+.agreement-portal-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.agreement-portal-kpi {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+}
+
+.agreement-portal-clause {
+    border-left: 4px solid #667eea;
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+}
+
+.performance-badge {
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+}

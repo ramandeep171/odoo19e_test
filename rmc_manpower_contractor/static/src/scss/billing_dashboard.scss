@@ -1,0 +1,45 @@
+.o_form_view .o_diesel_efficiency_gauge .o_field_widget {
+  width: 100%;
+}
+
+.o_form_view .o_diesel_efficiency_gauge .o_field_widget[name="dashboard_diesel_efficiency_bar"] {
+  display: block;
+}
+
+.o_form_view .o_diesel_efficiency_gauge .o-diesel-inline {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.o_form_view .o_diesel_efficiency_gauge .o-diesel-inline__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--o-gray-700, #4a4a4a);
+}
+
+.o_form_view .o_diesel_efficiency_gauge .o-diesel-inline__track {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.o_form_view .o_diesel_efficiency_gauge .o-diesel-inline__track .progress {
+  flex: 1;
+  height: 10px;
+  margin: 0;
+  border-radius: 999px;
+  background-color: rgba(111, 66, 193, 0.15);
+}
+
+.o_form_view .o_diesel_efficiency_gauge .o-diesel-inline__track .progress-bar {
+  border-radius: 999px;
+}
+
+.o_form_view .o_diesel_efficiency_gauge .o-diesel-inline__value {
+  min-width: 48px;
+  text-align: right;
+  font-weight: 600;
+  color: var(--o-gray-800, #333);
+}

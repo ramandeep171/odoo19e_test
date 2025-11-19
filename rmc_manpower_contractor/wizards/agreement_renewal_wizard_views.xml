@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_agreement_renewal_matrix_tree" model="ir.ui.view">
+            <field name="name">rmc.agreement.renewal.matrix.tree</field>
+            <field name="model">rmc.agreement.renewal.matrix.line</field>
+            <field name="arch" type="xml">
+                <list string="Renewal Manpower Lines" editable="bottom">
+                    <field name="designation"/>
+                    <field name="employee_id" optional="hide"/>
+                    <field name="vehicle_id" optional="hide"/>
+                    <field name="headcount"/>
+                    <field name="shift" optional="hide"/>
+                    <field name="remark"/>
+                    <field name="base_rate"/>
+                    <field name="total_amount" readonly="1"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_agreement_renewal_matrix_form" model="ir.ui.view">
+            <field name="name">rmc.agreement.renewal.matrix.form</field>
+            <field name="model">rmc.agreement.renewal.matrix.line</field>
+            <field name="arch" type="xml">
+                <form string="Manpower Line">
+                    <sheet>
+                        <group>
+                            <field name="designation"/>
+                            <field name="employee_id"/>
+                            <field name="vehicle_id"/>
+                        </group>
+                        <group>
+                            <field name="headcount"/>
+                            <field name="shift"/>
+                            <field name="remark"/>
+                        </group>
+                        <group>
+                            <field name="base_rate"/>
+                            <field name="total_amount" readonly="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_agreement_renewal_clause_tree" model="ir.ui.view">
+            <field name="name">rmc.agreement.renewal.clause.tree</field>
+            <field name="model">rmc.agreement.renewal.clause.line</field>
+            <field name="arch" type="xml">
+                <list string="Renewal Clauses" editable="bottom">
+                    <field name="sequence" widget="handle"/>
+                    <field name="title"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_agreement_renewal_clause_form" model="ir.ui.view">
+            <field name="name">rmc.agreement.renewal.clause.form</field>
+            <field name="model">rmc.agreement.renewal.clause.line</field>
+            <field name="arch" type="xml">
+                <form string="Clause">
+                    <sheet>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="title"/>
+                        </group>
+                        <field name="body_html" widget="html" class="o_rmc_clause_body"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_agreement_renewal_rule_tree" model="ir.ui.view">
+            <field name="name">rmc.agreement.renewal.rule.tree</field>
+            <field name="model">rmc.agreement.renewal.rule.line</field>
+            <field name="arch" type="xml">
+                <list string="Renewal Bonus/Penalty Rules" editable="bottom">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="rule_type"/>
+                    <field name="trigger_condition" optional="hide"/>
+                    <field name="percentage"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_agreement_renewal_rule_form" model="ir.ui.view">
+            <field name="name">rmc.agreement.renewal.rule.form</field>
+            <field name="model">rmc.agreement.renewal.rule.line</field>
+            <field name="arch" type="xml">
+                <form string="Bonus/Penalty Rule">
+                    <sheet>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="name"/>
+                            <field name="rule_type"/>
+                        </group>
+                        <group>
+                            <field name="trigger_condition"/>
+                            <field name="percentage"/>
+                        </group>
+                        <field name="notes" widget="text"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_agreement_renewal_wizard" model="ir.ui.view">
+            <field name="name">rmc.agreement.renewal.wizard.form</field>
+            <field name="model">rmc.agreement.renewal.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Agreement Renewal" create="false" edit="false">
+                    <header>
+                        <button name="action_confirm" type="object" string="Create Renewal Draft" class="btn-primary"/>
+                        <button special="cancel" string="Close"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="source_agreement_id" domain="[('state', '=', 'active')]"/>
+                                <field name="contractor_id" readonly="1"/>
+                                <field name="contract_type" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="validity_start"/>
+                                <field name="validity_end"/>
+                                <field name="revision_no" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Manpower Matrix">
+                                <field name="matrix_line_ids"
+                                       widget="one2many_list"
+                                       views="[(ref('rmc_manpower_contractor.view_agreement_renewal_matrix_tree'), 'list'), (ref('rmc_manpower_contractor.view_agreement_renewal_matrix_form'), 'form')]"/>
+                            </page>
+                            <page string="Clauses">
+                                <field name="clause_line_ids"
+                                       widget="one2many_list"
+                                       views="[(ref('rmc_manpower_contractor.view_agreement_renewal_clause_tree'), 'list'), (ref('rmc_manpower_contractor.view_agreement_renewal_clause_form'), 'form')]"/>
+                            </page>
+                            <page string="Bonus &amp; Penalty Rules">
+                                <field name="bonus_rule_line_ids"
+                                       widget="one2many_list"
+                                       views="[(ref('rmc_manpower_contractor.view_agreement_renewal_rule_tree'), 'list'), (ref('rmc_manpower_contractor.view_agreement_renewal_rule_form'), 'form')]"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_rmc_agreement_renewal_wizard" model="ir.actions.act_window">
+            <field name="name">Agreement Renewal</field>
+            <field name="res_model">rmc.agreement.renewal.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_agreement_renewal_wizard"/>
+            <field name="target">new</field>
+            <field name="context">{'default_source_agreement_id': active_id}</field>
+        </record>
+
+    </data>
+</odoo>

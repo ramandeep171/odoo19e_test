@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Contractor users can only see their own agreements and related records -->
+        <record id="rmc_agreement_contractor_rule" model="ir.rule">
+            <field name="name">RMC Agreement: Contractor User Own Records</field>
+            <field name="model_id" ref="model_rmc_contract_agreement"/>
+            <field name="domain_force">[('contractor_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_rmc_contractor_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Managers can see all -->
+        <record id="rmc_agreement_manager_rule" model="ir.rule">
+            <field name="name">RMC Agreement: Manager All Access</field>
+            <field name="model_id" ref="model_rmc_contract_agreement"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_rmc_manager'))]"/>
+        </record>
+
+        <!-- Agreement change logs mirror agreement visibility but remain read-only -->
+        <record id="rmc_agreement_change_log_contractor_rule" model="ir.rule">
+            <field name="name">RMC Agreement Change Log: Contractor Access</field>
+            <field name="model_id" ref="model_rmc_agreement_change_log"/>
+            <field name="domain_force">[('agreement_id.contractor_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_rmc_contractor_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="rmc_agreement_change_log_manager_rule" model="ir.rule">
+            <field name="name">RMC Agreement Change Log: Manager Access</field>
+            <field name="model_id" ref="model_rmc_agreement_change_log"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_rmc_manager'))]"/>
+        </record>
+
+        <!-- Diesel Log Rules -->
+        <record id="rmc_diesel_log_contractor_rule" model="ir.rule">
+            <field name="name">RMC Diesel Log: Contractor Own Records</field>
+            <field name="model_id" ref="model_rmc_diesel_log"/>
+            <field name="domain_force">[('agreement_id.contractor_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_rmc_contractor_user'))]"/>
+        </record>
+
+        <record id="rmc_diesel_log_manager_rule" model="ir.rule">
+            <field name="name">RMC Diesel Log: Manager All Access</field>
+            <field name="model_id" ref="model_rmc_diesel_log"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_rmc_manager'))]"/>
+        </record>
+
+        <record id="rmc_diesel_log_contractor_manager_rule" model="ir.rule">
+            <field name="name">RMC Diesel Log: Contractor Manager Access</field>
+            <field name="model_id" ref="model_rmc_diesel_log"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('rmc_manpower_contractor.group_rmc_contractor_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Similar rules for other models -->
+        <record id="rmc_maintenance_contractor_rule" model="ir.rule">
+            <field name="name">RMC Maintenance: Contractor Own Records</field>
+            <field name="model_id" ref="model_rmc_maintenance_check"/>
+            <field name="domain_force">[('agreement_id.contractor_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_rmc_contractor_user'))]"/>
+        </record>
+
+        <record id="rmc_maintenance_manager_rule" model="ir.rule">
+            <field name="name">RMC Maintenance: Manager All Access</field>
+            <field name="model_id" ref="model_rmc_maintenance_check"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_rmc_manager'))]"/>
+        </record>
+
+        <record id="rmc_attendance_contractor_rule" model="ir.rule">
+            <field name="name">RMC Attendance: Contractor Own Records</field>
+            <field name="model_id" ref="model_rmc_attendance_compliance"/>
+            <field name="domain_force">[('agreement_id.contractor_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('group_rmc_contractor_user'))]"/>
+        </record>
+
+        <record id="rmc_attendance_manager_rule" model="ir.rule">
+            <field name="name">RMC Attendance: Manager All Access</field>
+            <field name="model_id" ref="model_rmc_attendance_compliance"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_rmc_manager'))]"/>
+        </record>
+
+        <!-- Allow RMC managers to manage generated Sign requests without belonging to sign groups -->
+        <record id="rmc_sign_request_manager_rule" model="ir.rule">
+            <field name="name">Sign Request: RMC Manager Access</field>
+            <field name="model_id" ref="sign.model_sign_request"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_rmc_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="rmc_sign_template_manager_rule" model="ir.rule">
+            <field name="name">Sign Template: RMC Manager Access</field>
+            <field name="model_id" ref="sign.model_sign_template"/>
+            <field name="domain_force">['|', ('create_uid', '=', user.id), ('authorized_ids', 'in', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_rmc_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="rmc_sign_item_manager_rule" model="ir.rule">
+            <field name="name">Sign Item: RMC Manager Access</field>
+            <field name="model_id" ref="sign.model_sign_item"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_rmc_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

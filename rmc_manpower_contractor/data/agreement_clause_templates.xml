@@ -1,0 +1,242 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <data noupdate="1">
+    <record id="clause_template_pump_ops_cover" model="rmc.agreement.clause.template">
+      <field name="name">Pump Ops - Cover</field>
+      <field name="contract_type">pump_ops</field>
+      <field name="sequence">5</field>
+      <field name="title">Workforce Supply &amp; Operations Agreement</field>
+      <field name="body_html">
+&lt;p&gt;This Agreement is entered into between the Company and the Contractor for the deployment of skilled manpower to support Ready-Mix Concrete (RMC) operations. The parties acknowledge the scope, responsibilities, and commercial terms defined in the following clauses and annexures.&lt;/p&gt;
+</field>
+    </record>
+    <record id="clause_template_pump_ops_scope" model="rmc.agreement.clause.template">
+      <field name="name">Pump Ops - Clause 1</field>
+      <field name="contract_type">pump_ops</field>
+      <field name="sequence">10</field>
+      <field name="title">Clause 1. Scope of Work</field>
+      <field name="body_html">
+&lt;p&gt;The Contractor shall provide labour services for Ready-Mix Concrete (RMC) operations, including but not limited to:&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li&gt;Plant operation support &lt;/li&gt;
+    &lt;li&gt;Loading / unloading of materials &lt;/li&gt;
+    &lt;li&gt;Transit mixer assistance&lt;/li&gt;
+    &lt;li&gt;Maintenance team activities (mechanical, welding, electrical)&lt;/li&gt;
+    &lt;li&gt;housekeeping and General labor &lt;/li&gt;
+&lt;/ul&gt;
+</field>
+    </record>
+    <record id="clause_template_pump_ops_term" model="rmc.agreement.clause.template">
+      <field name="name">Pump Ops - Clause 2</field>
+      <field name="contract_type">pump_ops</field>
+      <field name="sequence">20</field>
+      <field name="title">Clause 2. Term</field>
+      <field name="body_html">
+&lt;p&gt;This Agreement shall remain valid for &lt;b&gt;(12) months&lt;/b&gt; ommencing from &lt;b&gt;1st October 2025&lt;/b&gt;, unless
+terminated earlier under Any Clause.&lt;/p&gt;
+</field>
+    </record>
+    <record id="clause_template_pump_ops_compliance" model="rmc.agreement.clause.template">
+      <field name="name">Pump Ops - Clause 3</field>
+      <field name="contract_type">pump_ops</field>
+      <field name="sequence">30</field>
+      <field name="title">Clause 3. Compliance &amp; Statutory Obligations</field>
+      <field name="body_html">
+&lt;p&gt;The Contractor shall comply with all applicable laws and regulations, including but not limited to:&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li&gt;Minimum Wages Act &lt;/li&gt;
+    &lt;li&gt;EPF &amp;amp; ESI provisions&lt;/li&gt;
+    &lt;li&gt;Insurance  (WC / ESI) for all deployed personnel&lt;/li&gt;
+    &lt;li&gt;Safety &amp;amp; PPE norms as instructed by the Company&lt;/li&gt;
+&lt;/ul&gt;
+</field>
+    </record>
+    <record id="clause_template_pump_ops_attendance" model="rmc.agreement.clause.template">
+      <field name="name">Pump Ops - Clause 4</field>
+      <field name="contract_type">pump_ops</field>
+      <field name="sequence">40</field>
+      <field name="title">Clause 4. Manpower &amp; Attendance</field>
+      <field name="body_html">
+&lt;li&gt;Post-wise headcount, shift timings, and rates shall follow &lt;b&gt;Annexure A (Manpower Matrix).&lt;/b&gt; &lt;/li&gt;
+&lt;li&gt; Daily attendance shall be maintained in the Company’s attendance system and will be
+the basis for certification and billing of the fixed component &lt;b&gt;(Part-A).&lt;/b&gt;&lt;/li&gt;
+</field>
+    </record>
+    <record id="clause_template_pump_ops_performance" model="rmc.agreement.clause.template">
+      <field name="name">Pump Ops - Clause 5</field>
+      <field name="contract_type">pump_ops</field>
+      <field name="sequence">50</field>
+      <field name="title">Clause 5. Performance, Diesel &amp; Maintenance Logs</field>
+      <field name="body_html">
+&lt;ul&gt;
+    &lt;li&gt;Contractor shall maintain daily labour logbook and diesel performance records;
+      maintenance/breakdown events shall be logged with evidence.&lt;/li&gt;
+      &lt;li&gt;Monthly performance score shall be computed by the Company based on diesel
+efficiency, maintenance compliance and attendance.&lt;/li&gt;
+&lt;li&gt;If the overall performance star rating falls below the average benchmark, the contract
+may be subject to review or warning notice by the Company.&lt;/li&gt;
+&lt;li&gt;The Contractor shall cooperate with the Company in maintaining accurate and verified
+daily diesel performance records to ensure transparency and timely payment.&lt;/li&gt;
+   
+&lt;/ul&gt;
+</field>
+    </record>
+    <record id="clause_template_pump_ops_unauthorized_changes" model="rmc.agreement.clause.template">
+      <field name="name">Pump Ops - Clause 5A</field>
+      <field name="contract_type">pump_ops</field>
+      <field name="sequence">55</field>
+      <field name="title">Clause 5A. Unauthorized Operational Changes</field>
+      <field name="body_html">
+&lt;p&gt;The Contractor shall not make, instruct, or permit any operational, technical, or process-related change in plant machinery, batching control systems, or any production parameters without prior written approval from Rach Infra’s authorized representative. Any such action, if done without approval, shall be deemed a breach of contract, and the Contractor shall be solely liable for all resultant losses, damages, and fuel or production costs arising therefrom.&lt;/p&gt;
+</field>
+    </record>
+    <record id="clause_template_pump_ops_commercials" model="rmc.agreement.clause.template">
+      <field name="name">Pump Ops - Clause 6</field>
+      <field name="contract_type">pump_ops</field>
+      <field name="sequence">60</field>
+      <field name="title">Clause 6. Commercials &amp; Billing Structure</field>
+      <field name="body_html">
+&lt;p&gt;Billing shall comprise the following components:&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Part-A (Fixed):&lt;/strong&gt; Attendance-linked fixed component as per Annexure A.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Part-B (Variable):&lt;/strong&gt; Production-linked rate per m³, payable Only if monthly production meets or
+exceeds MGQ (Minimum Guaranteed Quantity) as per Annexure B..&lt;/li&gt;
+    &lt;li&gt;If MGQ is not met due to Contractor-responsible causes, Part-B may be held or prorated as per
+Company policy.&lt;/li&gt;
+    &lt;li&gt;Applicable &lt;strong&gt;Taxes and deductions (TDS/GST)&lt;/strong&gt; shall be applied as per law.&lt;/li&gt;
+    &lt;/ul&gt;
+</field>
+    </record>
+    <record id="clause_template_pump_ops_advance" model="rmc.agreement.clause.template">
+      <field name="name">Pump Ops - Clause 7</field>
+      <field name="contract_type">pump_ops</field>
+      <field name="sequence">70</field>
+      <field name="title">Clause 7. Advance &amp; PDC</field>
+      <field name="body_html">
+&lt;p&gt;Advance, if given against &lt;strong&gt;PDC cheque guarantee&lt;/strong&gt;, shall be adjusted in future payments, and
+the cheque will be returned upon settlement&lt;/p&gt;
+</field>
+    </record>
+    <record id="clause_template_pump_ops_safety" model="rmc.agreement.clause.template">
+      <field name="name">Pump Ops - Clause 8</field>
+      <field name="contract_type">pump_ops</field>
+      <field name="sequence">80</field>
+      <field name="title">Clause 8. Safety &amp; PPE</field>
+      <field name="body_html">
+&lt;ul&gt;
+    &lt;li&gt;The Contractor shall ensure all deployed manpower follows site safety instructions at all times.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Safety shoes&lt;/strong&gt; shall be provided and maintained by the Contractor&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Reflective jackets, helmets, and gloves&lt;/strong&gt; shall be provided by &lt;strong&gt;Rach Infrastructure (OPC) Pvt. Ltd.&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</field>
+    </record>
+    <record id="clause_template_pump_ops_breakdowns" model="rmc.agreement.clause.template">
+      <field name="name">Pump Ops - Clause 9</field>
+      <field name="contract_type">pump_ops</field>
+      <field name="sequence">90</field>
+      <field name="title">Clause 9. Breakdowns / NGT / Force Majeure</field>
+      <field name="body_html">
+&lt;ol&gt;
+    &lt;P&gt;&lt;strong&gt;9.1 Breakdown Recording:&lt;/strong&gt;&lt;/P&gt;
+    &lt;P&gt;All Emergency, LOTO, and Scheduled breakdowns shall be duly recorded with their start and
+end times, along with identification of responsibility. In the event of downtime arising &lt;strong&gt; due to the
+Contractor’s non-responsibility,&lt;/strong&gt; Part-B deductions shall be applicable.&lt;/P&gt;
+        &lt;P&gt;&lt;strong&gt;9.2 NGT / Government Mandated Shutdowns:&lt;/strong&gt; &lt;/P&gt; 
+        &lt;P&gt;In the event of long-term NGT bans or any government-mandated shutdowns, the Company
+shall retain only minimum essential staff (for example, one Senior BPO and two Helpers) for
+ensuring plant safety and supervision.&lt;/P&gt;
+        &lt;P&gt;&lt;strong&gt;9.3 Standby Allowance:&lt;/strong&gt;&lt;/P&gt;
+        &lt;P&gt;For such retained staff, a daily standby allowance shall be payable at a mutually agreed rate
+between the Company and the Contractor.&lt;/P&gt;
+        &lt;P&gt;&lt;strong&gt;9.4 Continuation of Maintenance Activities:&lt;/strong&gt;&lt;/P&gt;
+        &lt;p&gt;Where maintenance activities continue during such shutdowns, the maintenance team shall
+remain entitled to their full fixed salary.&lt;/p&gt;
+        &lt;P&gt;&lt;strong&gt;9.5 Suspension of Maintenance Activities:&lt;/strong&gt;&lt;/P&gt;
+        &lt;p&gt;Where maintenance activities are also suspended, the salary cost of the retained staff shall,
+subject to mutual consent, be shared equally (50:50) between the Company and the Contractor,
+based on verified attendance records.&lt;/p&gt;
+    &lt;P&gt;&lt;strong&gt;9.6 FoFairness Provision:&lt;/strong&gt;&lt;/P&gt;
+    &lt;p&gt;This clause is intended to ensure fairness and mutual cooperation between the Parties during
+unavoidable shutdowns. For the avoidance of doubt, where the Monthly Guaranteed Quantity
+(MGQ) is fully achieved, there shall be no impact on the Contractor’s invoice,
+notwithstanding any temporary stoppages.&lt;/p&gt;
+&lt;p&gt;Illustration: In a month of 30 days, if 10 days are lost due to NGT shutdown but the MGQ of
+3000 cum is achieved within the remaining 20 days, no deduction shall apply.&lt;/p&gt;
+&lt;/ol&gt;
+</field>
+    </record>
+    <record id="clause_template_pump_ops_annex_a" model="rmc.agreement.clause.template">
+      <field name="name">Pump Ops - Annexure A</field>
+      <field name="contract_type">pump_ops</field>
+      <field name="sequence">100</field>
+      <field name="title">Annexure A – Manpower Matrix (Illustrative)</field>
+        <field name="body_html"><![CDATA[]]></field>
+    </record>
+    <record id="clause_template_pump_ops_annex_b" model="rmc.agreement.clause.template">
+      <field name="name">Pump Ops - Annexure B</field>
+      <field name="contract_type">pump_ops</field>
+      <field name="sequence">110</field>
+      <field name="title">Annexure B – MGQ &amp; Variable Rate</field>
+      <field name="body_html">
+&lt;p&gt;Monthly MGQ targets, Part-A fixed value, and Part-B variable payouts are detailed in the Financial Details section. MGQ achievement shall be validated through Company production reports.&lt;/p&gt;
+</field>
+    </record>
+    <record id="clause_template_pump_ops_annex_c" model="rmc.agreement.clause.template">
+      <field name="name">Pump Ops - Annexure C</field>
+      <field name="contract_type">pump_ops</field>
+      <field name="sequence">120</field>
+      <field name="title">Annexure C – Documents Checklist</field>
+      <field name="body_html">
+&lt;ul&gt;
+    &lt;li&gt;GST  PAN  Copies &lt;/li&gt;
+    &lt;li&gt;labour licence copy &lt;/li&gt;
+    &lt;li&gt;EPF / ESI registration and challans&lt;/li&gt;
+    &lt;li&gt;Insurance / WC policies&lt;/li&gt;
+    &lt;li&gt;Bank details (cancelled cheque)&lt;/li&gt;
+&lt;/ul&gt;
+</field>
+    </record>
+    <record id="clause_template_pump_ops_annex_c_1" model="rmc.agreement.clause.template">
+      <field name="name">Pump Ops - Annexure C.1</field>
+      <field name="contract_type">pump_ops</field>
+      <field name="sequence">125</field>
+      <field name="title">Annexure C.1 – Employee KYC Documentation</field>
+      <field name="body_html">
+&lt;h4&gt;1. Mandatory KYC Records&lt;/h4&gt;
+&lt;p&gt;The Contractor shall ensure that the KYC documents of all deployed personnel (existing and future) are submitted to the Company prior to their deployment. The following documents are mandatory for each employee:&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li&gt;Aadhaar Card (proof of identity and address)&lt;/li&gt;
+    &lt;li&gt;PAN Card (if available)&lt;/li&gt;
+    &lt;li&gt;Recent passport-size photograph&lt;/li&gt;
+    &lt;li&gt;Bank account details (cancelled cheque or passbook copy)&lt;/li&gt;
+    &lt;li&gt;Emergency contact number and residential address&lt;/li&gt;
+    &lt;li&gt;Police verification certificate (where applicable)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;2. New Joinees&lt;/h4&gt;
+&lt;p&gt;No employee shall be allowed to commence work at the site without submission of the complete KYC set to the Company.&lt;/p&gt;
+&lt;h4&gt;3. Exits / Transfers&lt;/h4&gt;
+&lt;p&gt;The Contractor shall maintain records of employees who leave employment, including exit clearances. Updated manpower lists shall be shared with the Company from time to time.&lt;/p&gt;
+&lt;h4&gt;4. Company’s Right&lt;/h4&gt;
+&lt;p&gt;The Company reserves the right to deny site access to any employee whose KYC documents are incomplete or not submitted.&lt;/p&gt;
+</field>
+    </record>
+    <record id="clause_template_pump_ops_annex_d" model="rmc.agreement.clause.template">
+      <field name="name">Pump Ops - Annexure D</field>
+      <field name="contract_type">pump_ops</field>
+      <field name="sequence">130</field>
+      <field name="title">Annexure D – Contacts &amp; Notices</field>
+      <field name="body_html">
+&lt;p&gt;The contact matrix below summarises the primary communication channels for both parties. Company and contractor details (registered address, GST/VAT, phone, email, and website) are rendered dynamically in the agreement report to ensure the latest data is reflected.&lt;/p&gt;
+</field>
+    </record>
+    <record id="clause_template_pump_ops_annex_e" model="rmc.agreement.clause.template">
+      <field name="name">Pump Ops - Annexure E</field>
+      <field name="contract_type">pump_ops</field>
+      <field name="sequence">140</field>
+      <field name="title">Annexure E – Plant Tools &amp; Inventory</field>
+      <field name="body_html">
+&lt;p&gt;The Contractor shall acknowledge receipt of plant tools, spares, and safety equipment issued by the Company. Issuance dates, condition, and return status shall be logged; losses or damages will be recovered as per agreed procedure.&lt;/p&gt;
+</field>
+    </record>
+  </data>
+</odoo>

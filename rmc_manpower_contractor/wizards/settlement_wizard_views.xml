@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_rmc_agreement_settlement_wizard" model="ir.ui.view">
+            <field name="name">rmc.agreement.settlement.wizard.form</field>
+            <field name="model">rmc.agreement.settlement.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Agreement Settlement" create="false" edit="false">
+                    <sheet>
+                        <group string="Context">
+                            <field name="agreement_id" readonly="1"/>
+                            <field name="contractor_id" readonly="1"/>
+                            <field name="period_start"/>
+                            <field name="period_end"/>
+                        </group>
+                        <group string="Performance Snapshot" col="4">
+                            <field name="mgq_target" readonly="1"/>
+                            <field name="mgq_actual_qty" readonly="1"/>
+                            <field name="mgq_achieved" widget="boolean_toggle" readonly="1"/>
+                            <field name="variable_pay_amount" readonly="1"/>
+                        </group>
+                        <group string="Adjustments" col="4">
+                            <field name="breakdown_deduction_total" readonly="1"/>
+                            <field name="inventory_variance_total" readonly="1"/>
+                            <field name="damage_cost_total" readonly="1"/>
+                            <field name="open_bills_total" readonly="1"/>
+                        </group>
+                        <group string="Decision">
+                            <field name="final_payable_amount" readonly="1"/>
+                            <field name="proposed_action"/>
+                            <field name="hold_detected" widget="boolean_toggle" readonly="1"/>
+                            <field name="hold_reason" readonly="1" colspan="4"/>
+                            <field name="notes" colspan="4"/>
+                        </group>
+                        <notebook>
+                            <page string="Breakdowns">
+                                <field name="breakdown_event_ids" nolabel="1" widget="many2many_tags" readonly="1"/>
+                            </page>
+                            <page string="Inventory">
+                                <field name="inventory_handover_ids" nolabel="1" readonly="1" widget="many2many_tags"/>
+                            </page>
+                            <page string="Open Bills">
+                                <field name="open_bill_ids" nolabel="1" readonly="1">
+                                    <list string="Open Vendor Bills">
+                                        <field name="display_name"/>
+                                        <field name="invoice_date"/>
+                                        <field name="move_type"/>
+                                        <field name="amount_total"/>
+                                        <field name="amount_residual"/>
+                                        <field name="payment_state"/>
+                                        <field name="state"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <footer>
+                        <button string="Confirm Settlement" type="object" name="action_confirm" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

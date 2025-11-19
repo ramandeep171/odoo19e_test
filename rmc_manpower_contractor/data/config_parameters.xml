@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Performance Score Weights -->
+        <record id="config_weight_diesel" model="ir.config_parameter">
+            <field name="key">rmc_score.weight_diesel</field>
+            <field name="value">0.5</field>
+        </record>
+
+        <record id="config_weight_maintenance" model="ir.config_parameter">
+            <field name="key">rmc_score.weight_maintenance</field>
+            <field name="value">0.3</field>
+        </record>
+
+        <record id="config_weight_attendance" model="ir.config_parameter">
+            <field name="key">rmc_score.weight_attendance</field>
+            <field name="value">0.2</field>
+        </record>
+
+        <!-- Star Rating Thresholds -->
+        <record id="config_star_5_threshold" model="ir.config_parameter">
+            <field name="key">rmc_score.star_5_threshold</field>
+            <field name="value">90</field>
+        </record>
+
+        <record id="config_star_4_threshold" model="ir.config_parameter">
+            <field name="key">rmc_score.star_4_threshold</field>
+            <field name="value">75</field>
+        </record>
+
+        <record id="config_star_3_threshold" model="ir.config_parameter">
+            <field name="key">rmc_score.star_3_threshold</field>
+            <field name="value">60</field>
+        </record>
+
+        <record id="config_star_2_threshold" model="ir.config_parameter">
+            <field name="key">rmc_score.star_2_threshold</field>
+            <field name="value">40</field>
+        </record>
+
+        <!-- Minimum Payment Score -->
+        <record id="config_min_payment_score" model="ir.config_parameter">
+            <field name="key">rmc_score.min_payment_score</field>
+            <field name="value">40</field>
+        </record>
+        <record id="config_enforce_min_payment_score" model="ir.config_parameter">
+            <field name="key">rmc_score.enforce_min_payment_score</field>
+            <field name="value">0</field>
+        </record>
+        <record id="config_enforce_type_kpis" model="ir.config_parameter">
+            <field name="key">rmc_score.enforce_type_kpis</field>
+            <field name="value">1</field>
+        </record>
+
+        <!-- Billing Bonus/Penalty Percentages -->
+        <record id="config_bonus_5_star" model="ir.config_parameter">
+            <field name="key">rmc_billing.bonus_5_star</field>
+            <field name="value">10.0</field>
+        </record>
+
+        <record id="config_bonus_4_star" model="ir.config_parameter">
+            <field name="key">rmc_billing.bonus_4_star</field>
+            <field name="value">5.0</field>
+        </record>
+
+        <record id="config_penalty_2_star" model="ir.config_parameter">
+            <field name="key">rmc_billing.penalty_2_star</field>
+            <field name="value">-5.0</field>
+        </record>
+
+        <record id="config_penalty_1_star" model="ir.config_parameter">
+            <field name="key">rmc_billing.penalty_1_star</field>
+            <field name="value">-10.0</field>
+        </record>
+
+        <!-- Retention grouping -->
+        <record id="config_retention_grouping" model="ir.config_parameter">
+            <field name="key">rmc_manpower_contractor.group_retention_release_by_agreement</field>
+            <field name="value">0</field>
+        </record>
+
+        <!-- Sequences -->
+        <record id="seq_rmc_agreement" model="ir.sequence">
+            <field name="name">RMC Agreement</field>
+            <field name="code">rmc.contract.agreement</field>
+            <field name="prefix">RMCA-</field>
+            <field name="padding">5</field>
+            <field name="number_increment">1</field>
+        </record>
+
+        <record id="seq_rmc_diesel_log" model="ir.sequence">
+            <field name="name">RMC Diesel Log</field>
+            <field name="code">rmc.diesel.log</field>
+            <field name="prefix">DL-</field>
+            <field name="padding">5</field>
+        </record>
+
+        <record id="seq_rmc_maintenance" model="ir.sequence">
+            <field name="name">RMC Maintenance Check</field>
+            <field name="code">rmc.maintenance.check</field>
+            <field name="prefix">MC-</field>
+            <field name="padding">5</field>
+        </record>
+
+        <record id="seq_rmc_attendance" model="ir.sequence">
+            <field name="name">RMC Attendance Compliance</field>
+            <field name="code">rmc.attendance.compliance</field>
+            <field name="prefix">AC-</field>
+            <field name="padding">5</field>
+        </record>
+
+        <record id="seq_rmc_breakdown" model="ir.sequence">
+            <field name="name">RMC Breakdown Event</field>
+            <field name="code">rmc.breakdown.event</field>
+            <field name="prefix">BD-</field>
+            <field name="padding">5</field>
+        </record>
+
+        <record id="seq_rmc_inventory" model="ir.sequence">
+            <field name="name">RMC Inventory Handover</field>
+            <field name="code">rmc.inventory.handover</field>
+            <field name="prefix">INV-</field>
+            <field name="padding">5</field>
+        </record>
+
+    </data>
+</odoo>

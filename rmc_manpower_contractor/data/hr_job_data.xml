@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="job_manpower_admin_coordinator" model="hr.job">
+            <field name="name">Administration Coordinator – Manpower Contracts</field>
+            <field name="department_id" ref="hr.dep_administration"/>
+            <field name="no_of_employee">0</field>
+            <field name="no_of_recruitment">0</field>
+            <field name="website_published">False</field>
+            <field name="company_id" eval="False"/>
+            <field name="description">
+                <![CDATA[
+                <p>Handles administration workflows, document tracking, and compliance follow-up for manpower contractor agreements.</p>
+                <ul>
+                    <li>Coordinates agreement paperwork with HR and Finance.</li>
+                    <li>Monitors onboarding requirements and statutory submissions for contractors.</li>
+                    <li>Supports audit trails and inventory issuance linked to manpower engagements.</li>
+                </ul>
+                ]]>
+            </field>
+        </record>
+    </data>
+</odoo>

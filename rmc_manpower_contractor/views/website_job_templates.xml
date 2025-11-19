@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="job_detail_admin_coordinator" inherit_id="website_hr_recruitment.detail">
+            <xpath expr="//div[@id='wrap']//div[@t-field='job.website_description']" position="replace">
+                <t t-set="job_admin_coordinator" t-value="request.env.ref('rmc_manpower_contractor.job_manpower_admin_coordinator', raise_if_not_found=False)"/>
+                <t t-if="job_admin_coordinator and job == job_admin_coordinator">
+                    <t t-call="rmc_manpower_contractor.website_manpower_partner_page_content"/>
+                </t>
+                <t t-else="">
+                    <div t-field="job.website_description"/>
+                </t>
+            </xpath>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Agreement Form View -->
+        <record id="view_rmc_agreement_form" model="ir.ui.view">
+            <field name="name">rmc.contract.agreement.form</field>
+            <field name="model">rmc.contract.agreement</field>
+            <field name="arch" type="xml">
+                <form string="RMC Contract Agreement">
+                    <header>
+                        <button name="action_preview_and_send" string="Preview &amp; Send" type="object" class="btn-secondary" invisible="state not in ['draft', 'offer', 'negotiation', 'verification']"/>
+                        <button name="action_send_for_sign" string="Send for Signature" type="object" class="oe_highlight" invisible="state not in ['draft', 'offer', 'negotiation', 'verification']"/>
+                        <button name="action_start_closure" string="Start Closure" type="object" class="btn-outline-secondary" invisible="state not in ['active', 'expired'] or settlement_hold"/>
+                        <button name="action_open_settlement_wizard" string="Open Settlement Wizard" type="object" class="oe_highlight" invisible="state != 'closure_review'"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,offer,sign_pending,active,closure_review,settled"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="agreement_primary_actions">
+                            <button name="action_view_monthly_report" string="View Monthly Report" type="object" class="oe_highlight" invisible="state != 'active'"/>
+                        </div>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_open_prev_chain" type="object" class="oe_stat_button" icon="fa-history" invisible="previous_agreement_count == 0">
+                                <field name="previous_agreement_count" widget="statinfo" string="Previous Versions"/>
+                            </button>
+                            <button name="action_open_next_chain" type="object" class="oe_stat_button" icon="fa-level-up" invisible="next_agreement_count == 0">
+                                <field name="next_agreement_count" widget="statinfo" string="Next Versions"/>
+                            </button>
+                            <button name="action_open_renewal_wizard" type="object" class="oe_stat_button" icon="fa-refresh">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_value">Rev <field name="revision_no"/></span>
+                                    <span class="o_stat_text">Renewal Wizard</span>
+                                </div>
+                            </button>
+                            <button name="action_view_diesel_logs" type="object" class="oe_stat_button" icon="fa-tint">
+                                <field name="diesel_log_count" widget="statinfo" string="Diesel Logs"/>
+                            </button>
+                            <button name="action_print_performance_summary" type="object" class="oe_stat_button" icon="fa-line-chart">
+                                <field name="performance_score" widget="statinfo" string="Performance"/>
+                            </button>
+                            <button name="action_view_employee_attendance" type="object" class="oe_stat_button" icon="fa-calendar-check-o">
+                                <field name="employee_attendance_count" widget="statinfo" string="HR Attendance"/>
+                            </button>
+                            <button name="action_view_breakdowns" type="object" class="oe_stat_button" icon="fa-exclamation-triangle">
+                                <field name="breakdown_event_count" widget="statinfo" string="Breakdowns"/>
+                            </button>
+                            <button name="action_view_inventory" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="inventory_handover_count" widget="statinfo" string="Inventory"/>
+                            </button>
+                            <button name="action_new_inventory_handover" type="object" class="oe_stat_button" icon="fa-cubes">
+                                <field name="inventory_handover_count" widget="statinfo" string="New Inventory Request"/>
+                            </button>
+                            <button name="action_view_fleet_vehicles" type="object" class="oe_stat_button" icon="fa-truck">
+                                <field name="fleet_vehicle_count" widget="statinfo" string="Fleet"/>
+                            </button>
+                            <button name="action_view_vendor_bills" type="object" class="oe_stat_button" icon="fa-money">
+                                <field name="vendor_bill_count" widget="statinfo" string="Bills"/>
+                            </button>
+                            <button name="action_view_billing_prepare_logs" type="object" class="oe_stat_button" icon="fa-list-alt">
+                                <field name="billing_prepare_log_count" widget="statinfo" string="Billing Logs"/>
+                            </button>
+                            
+                            <button name="action_view_equipment" type="object" class="oe_stat_button" icon="fa-cogs">
+                                <field name="equipment_count" widget="statinfo" string="Equipment"/>
+                            </button>
+                            <button name="action_view_equipment_requests" type="object" class="oe_stat_button" icon="fa-wrench">
+                                <field name="equipment_request_count" widget="statinfo" string="Maint. Requests"/>
+                            </button>
+                            <button name="action_view_sign_request" type="object" class="oe_stat_button" icon="fa-pencil-square-o" invisible="sign_request_id == False">
+                                <field name="sign_state" widget="badge" string="Sign Status"/>
+                            </button>
+                        </div>
+                        
+                        <widget name="web_ribbon" title="Signed" bg_color="text-bg-success" invisible="is_agreement_signed == False"/>
+                        <widget name="web_ribbon" title="Payment Hold" bg_color="text-bg-danger" invisible="payment_hold == False"/>
+                        <widget name="web_ribbon" title="Settlement Hold" bg_color="text-bg-warning" invisible="settlement_hold == False"/>
+                        
+                        <div class="oe_title">
+                            <label for="name" string="Agreement"/>
+                            <h1><field name="name" readonly="1"/></h1>
+                        </div>
+                        
+                        <group>
+                            <group>
+                                <field name="contractor_id" string="Contractor" options="{'no_create': True}" required="1"/>
+                                <field name="contract_type" readonly="is_agreement_signed"/>
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                            </group>
+                            <group>
+                                <field name="sign_template_id"/>
+                                <field name="sign_request_id" readonly="1"/>
+                                <field name="is_agreement_signed" invisible="1"/>
+                                <field name="dynamic_web_path" widget="url"/>
+                                <field name="currency_id" invisible="1"/>
+                            </group>
+                        </group>
+                        
+                        <!-- Performance Dashboard -->
+                        <group string="Performance Dashboard" col="4">
+                            <field name="performance_score" widget="progressbar"/>
+                            <field name="stars" widget="badge"/>
+                            <field name="avg_diesel_efficiency"/>
+                            <field name="maintenance_compliance" widget="progressbar"/>
+                            <field name="attendance_compliance" widget="progressbar"/>
+                            <field name="prime_output_qty"/>
+                            <field name="optimized_standby_qty"/>
+                            <field name="pending_items_count" widget="badge" decoration-danger="pending_items_count &gt; 0"/>
+                            <field name="payment_hold" widget="boolean_toggle"/>
+                            <field name="payment_hold_reason" widget="text" colspan="4" invisible="payment_hold == False"/>
+                            <field name="settlement_hold" widget="boolean_toggle" readonly="1"/>
+                            <field name="settlement_hold_reason" widget="text" colspan="4" readonly="1" invisible="settlement_hold == False"/>
+                        </group>
+                        
+                        <!-- Financial -->
+                        <group string="Financial Details">
+                            <group>
+                                <field name="mgq_target"/>
+                                <field name="part_a_fixed" readonly="1"/>
+                                <field name="part_b_variable"/>
+                                <field name="total_amount" string="Total Monthly Amount"/>
+                            </group>
+                            <group>
+                                <field name="analytic_account_id"/>
+                            </group>
+                        </group>
+                        
+                        <!-- Manpower Matrix -->
+                        <notebook>
+                            <page string="Manpower Matrix">
+                                <field name="manpower_matrix_ids">
+                                    <form>
+                                        <group>
+                                            <group>                                                
+                                                <field name="employee_id"
+                                                       options="{'no_quick_create': True}"/>
+                                                <field name="designation"/>
+                                                <field name="headcount"/>
+                                                <field name="shift"/>
+                                            </group>
+                                            <group>
+                                                <field name="base_rate"/>
+                                                <field name="remark"/>
+                                                <field name="vehicle_id"
+                                                       options="{'no_quick_create': True}"/>
+                                                <field name="total_amount"/>
+                                                <field name="currency_id" invisible="1"/>
+                                            </group>
+                                          
+                                        </group>
+                                    </form>
+                                    <list editable="bottom">
+                                        <field name="job_position_name" readonly="1" string="Job Position"/>
+                                        <field name="employee_id"/>
+                                        <!-- <field name="vehicle_id"/> -->
+                                        <field name="headcount"/>
+                                        <field name="shift"/>
+                                        <field name="base_rate"/>
+                                        <field name="remark"/>
+                                        <field name="total_amount" sum="Total"/>
+                                        <field name="currency_id" column_invisible="1"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Fleet &amp; Workforce">
+                                <group>
+                                    <group>
+                                        <field name="vehicle_ids" widget="many2many_tags" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="driver_ids" widget="many2many_tags" readonly="1"/>
+                                    </group>
+                                </group>
+                                <field name="vehicle_diesel_log_ids" nolabel="1" readonly="1" widget="many2many_tags" options="{'no_create': True, 'no_edit': True, 'no_open': False}"/>
+                                <field name="equipment_ids" nolabel="1" widget="many2many_tags" readonly="1" options="{'no_create': True, 'no_edit': True, 'no_open': False}"/>
+                                <field name="equipment_request_ids" nolabel="1" widget="many2many_tags" readonly="1" options="{'no_create': True, 'no_edit': True, 'no_open': False}"/>
+                                <field name="employee_attendance_ids" readonly="1" nolabel="1" widget="many2many_tags" options="{'no_create': True, 'no_edit': True, 'no_open': False}"/>
+                            </page>
+                            <page string="Inventory">
+                                <field name="inventory_handover_ids"
+                                       domain="['|', ('date', '=', False), ('date', '>=', activity_start_date)]"
+                                       context="{'default_agreement_id': id, 'default_contractor_id': contractor_id}"/>
+                            </page>
+                            <page string="Retention">
+                                <group>
+                                    <group>
+                                        <field name="auto_apply"/>
+                                        <field name="retention_rate"/>
+                                        <field name="retention_base"/>
+                                    </group>
+                                    <group>
+                                        <field name="retention_duration"/>
+                                        <field name="retention_balance" readonly="1"/>
+                                        <field name="retention_released_amount" readonly="1"/>
+                                    </group>
+                                </group>
+                                <field name="retention_entry_ids"
+                                       context="{'default_agreement_id': id}"
+                                       options="{'no_create': True, 'no_create_edit': True}"
+                                       views="[(ref('rmc_manpower_contractor.view_rmc_agreement_retention_tree'), 'list'), (ref('rmc_manpower_contractor.view_rmc_agreement_retention_form'), 'form')]"/>
+                            </page>
+                            <page string="Signers">
+                                <field name="signer_ids"/>
+                                <label for="signer_ids" help="Override the partner assigned to each Sign template role. Leave empty to use defaults."/>
+                            </page>
+                            <page string="Clauses">
+                                <field name="clause_ids"
+                                       context="{'default_agreement_id': id}"
+                                       views="[(ref('rmc_manpower_contractor.view_rmc_agreement_clause_tree'), 'list'), (ref('rmc_manpower_contractor.view_rmc_agreement_clause_form'), 'form')]"/>
+                            </page>
+                            <page string="Bonus &amp; Penalty Rules">
+                                <field name="bonus_rule_ids"
+                                       context="{'default_agreement_id': id}"
+                                       views="[(ref('rmc_manpower_contractor.view_rmc_bonus_rule_tree'), 'list'), (ref('rmc_manpower_contractor.view_rmc_bonus_rule_form'), 'form')]"/>
+                            </page>
+                            <page string="Notes">
+                                <field name="notes"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_rmc_agreement_clause_tree" model="ir.ui.view">
+            <field name="name">rmc.agreement.clause.tree</field>
+            <field name="model">rmc.agreement.clause</field>
+            <field name="type">list</field>
+            <field name="arch" type="xml">
+                <list string="Agreement Clauses" editable="bottom">
+                    <field name="sequence" widget="handle"/>
+                    <field name="title"/>
+                    <field name="body_html" widget="html" optional="hide"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_rmc_agreement_clause_form" model="ir.ui.view">
+            <field name="name">rmc.agreement.clause.form</field>
+            <field name="model">rmc.agreement.clause</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Agreement Clause">
+                    <sheet>
+                        <group>
+                            <field name="title"/>
+                            <field name="sequence"/>
+                        </group>
+                        <field name="body_html" widget="html" class="o_rmc_clause_body"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_rmc_bonus_rule_tree" model="ir.ui.view">
+            <field name="name">rmc.agreement.bonus.rule.tree</field>
+            <field name="model">rmc.agreement.bonus.rule</field>
+            <field name="arch" type="xml">
+                <list string="Bonus/Penalty Rules" editable="bottom">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="rule_type"/>
+                    <field name="trigger_condition" optional="hide"/>
+                    <field name="percentage"/>
+                    <field name="notes" optional="hide"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_rmc_bonus_rule_form" model="ir.ui.view">
+            <field name="name">rmc.agreement.bonus.rule.form</field>
+            <field name="model">rmc.agreement.bonus.rule</field>
+            <field name="arch" type="xml">
+                <form string="Bonus/Penalty Rule">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="sequence"/>
+                                <field name="name"/>
+                                <field name="rule_type"/>
+                            </group>
+                            <group>
+                                <field name="trigger_condition"/>
+                                <field name="percentage"/>
+                            </group>
+                        </group>
+                        <field name="notes" widget="text"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_rmc_agreement_retention_tree" model="ir.ui.view">
+            <field name="name">rmc.agreement.retention.tree</field>
+            <field name="model">rmc.agreement.retention</field>
+            <field name="arch" type="xml">
+                <list string="Retention Holds" create="0" edit="0" delete="0">
+                    <field name="name"/>
+                    <field name="move_id"/>
+                    <field name="retention_rate"/>
+                    <field name="retention_base"/>
+                    <field name="base_amount"/>
+                    <field name="retention_amount"/>
+                    <field name="scheduled_release_date"/>
+                    <field name="release_state" widget="badge"/>
+                    <field name="released_date"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_rmc_agreement_retention_form" model="ir.ui.view">
+            <field name="name">rmc.agreement.retention.form</field>
+            <field name="model">rmc.agreement.retention</field>
+            <field name="arch" type="xml">
+                <form string="Retention Hold">
+                    <header>
+                        <button name="action_release" string="Release" type="object" class="oe_highlight" modifiers="{'invisible': [('release_state', '!=', 'pending')]}"/>
+                        <button name="action_cancel" string="Cancel" type="object" modifiers="{'invisible': [('release_state', '!=', 'pending')]}"/>
+                        <field name="release_state" widget="statusbar" statusbar_visible="pending,released,cancelled"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="agreement_id" readonly="1"/>
+                                <field name="move_id" readonly="1"/>
+                                <field name="vendor_id" readonly="1"/>
+                                <field name="retention_duration" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="retention_rate" readonly="1"/>
+                                <field name="retention_base" readonly="1"/>
+                                <field name="base_amount" readonly="1"/>
+                                <field name="retention_amount" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="scheduled_release_date" readonly="1"/>
+                            <field name="released_date" readonly="1"/>
+                            <field name="auto_release"/>
+                        </group>
+                        <field name="notes"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_rmc_agreement_performance_tree" model="ir.ui.view">
+            <field name="name">rmc.contract.agreement.performance.tree</field>
+            <field name="model">rmc.contract.agreement</field>
+            <field name="arch" type="xml">
+                <list string="Agreement Performance Overview">
+                    <field name="name"/>
+                    <field name="contractor_id"/>
+                    <field name="contract_type"/>
+                    <field name="sign_state"/>
+                    <field name="performance_score" widget="progressbar"/>
+                    <field name="mgq_target"/>
+                    <field name="pending_items_count"/>
+                    <field name="payment_hold"/>
+                    <field name="validity_start"/>
+                    <field name="validity_end"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_rmc_agreement_performance_pivot" model="ir.ui.view">
+            <field name="name">rmc.contract.agreement.performance.pivot</field>
+            <field name="model">rmc.contract.agreement</field>
+            <field name="arch" type="xml">
+                <pivot string="Agreement Performance Overview">
+                    <field name="performance_score" type="measure"/>
+                    <field name="pending_items_count" type="measure"/>
+                    <field name="mgq_target" type="measure"/>
+                    <field name="part_a_fixed" type="measure"/>
+                    <field name="part_b_variable" type="measure"/>
+                    <field name="contractor_id" type="row"/>
+                    <field name="contract_type" type="col"/>
+                    <field name="state" type="col"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="view_rmc_agreement_performance_graph" model="ir.ui.view">
+            <field name="name">rmc.contract.agreement.performance.graph</field>
+            <field name="model">rmc.contract.agreement</field>
+            <field name="arch" type="xml">
+                <graph string="Agreement Performance" type="bar">
+                    <field name="performance_score" type="measure"/>
+                    <field name="contractor_id" type="row"/>
+                    <field name="contract_type" type="col"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="action_rmc_agreement_performance_dashboard" model="ir.actions.act_window">
+            <field name="name">Agreement Performance Dashboard</field>
+            <field name="res_model">rmc.contract.agreement</field>
+            <field name="view_mode">pivot,graph,list</field>
+            <field eval="False" name="view_id"/>
+            <field name="context">{'search_default_group_by_contract_type': 1}</field>
+            <field name="help" type="html">
+                <p>
+                    Analyse agreement performance with pivot, chart, and list views. Drill down by contractor,
+                    contract type, signature status, and MGQ targets. Use the Print menu to download a consolidated
+                    performance summary.
+                </p>
+            </field>
+        </record>
+
+        <!-- Agreement Tree View -->
+        <record id="view_rmc_agreement_tree" model="ir.ui.view">
+            <field name="name">rmc.contract.agreement.tree</field>
+            <field name="model">rmc.contract.agreement</field>
+            <field name="arch" type="xml">
+                <list string="RMC Agreements" decoration-success="state == 'active'" decoration-warning="payment_hold == True" decoration-muted="state == 'expired'">
+                    <field name="name"/>
+                    <field name="revision_no"/>
+                    <field name="contractor_id"/>
+                    <field name="contract_type"/>
+                    <field name="performance_score" widget="progressbar"/>
+                    <field name="stars"/>
+                    <field name="payment_hold" widget="boolean_toggle" readonly="1"/>
+                    <field name="pending_items_count"/>
+                    <field name="validity_start"/>
+                    <field name="validity_end"/>
+                    <field name="state" widget="badge" decoration-success="state == 'active'" decoration-info="state == 'sign_pending'"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_rmc_agreement_chain_tree" model="ir.ui.view">
+            <field name="name">rmc.contract.agreement.chain.tree</field>
+            <field name="model">rmc.contract.agreement</field>
+            <field name="arch" type="xml">
+                <list string="Agreement Lineage" create="0" delete="0" edit="0">
+                    <field name="name"/>
+                    <field name="revision_no" string="Revision"/>
+                    <field name="validity_start"/>
+                    <field name="validity_end"/>
+                    <field name="state" widget="badge" decoration-success="state == 'active'" decoration-warning="state == 'negotiation'" decoration-muted="state == 'expired'"/>
+                    <field name="contractor_id"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Agreement Search View -->
+        <record id="view_rmc_agreement_search" model="ir.ui.view">
+            <field name="name">rmc.contract.agreement.search</field>
+            <field name="model">rmc.contract.agreement</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="contractor_id"/>
+                    <field name="contract_type"/>
+                    <filter string="Active" name="filter_active" domain="[('state', '=', 'active')]"/>
+                    <filter string="Payment Hold" name="filter_payment_hold" domain="[('payment_hold', '=', True)]"/>
+                    <filter string="Pending Signature" name="filter_pending_sign" domain="[('state', '=', 'sign_pending')]"/>
+                    <group>
+                        <filter string="Contract Type" name="group_contract_type" context="{'group_by': 'contract_type'}"/>
+                        <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
+                        <filter string="Contractor" name="group_contractor" context="{'group_by': 'contractor_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Agreement Kanban View -->
+        <record id="view_rmc_agreement_kanban" model="ir.ui.view">
+            <field name="name">rmc.contract.agreement.kanban</field>
+            <field name="model">rmc.contract.agreement</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile">
+                    <field name="name"/>
+                    <field name="contractor_id"/>
+                    <field name="contract_type"/>
+                    <field name="performance_score"/>
+                    <field name="stars"/>
+                    <field name="state"/>
+                    <field name="revision_no"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title"><field name="name"/></strong>
+                                        <div><field name="contractor_id"/></div>
+                                    </div>
+                                    <div class="float-end d-flex flex-column align-items-end gap-1">
+                                        <span class="badge text-bg-primary"><field name="contract_type"/></span>
+                                        <span class="badge text-bg-secondary">
+                                            Rev r<t t-esc="record.revision_no.raw_value or 1"/>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div>Performance: <field name="performance_score"/>% <field name="stars"/></div>
+                                    <span class="badge" t-att-class="record.state.raw_value == 'active' ? 'text-bg-success' : 'text-bg-warning'">
+                                        <field name="state"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Agreement Action -->
+        <record id="action_rmc_agreement" model="ir.actions.act_window">
+            <field name="name">Agreements</field>
+            <field name="res_model">rmc.contract.agreement</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first RMC Contractor Agreement
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

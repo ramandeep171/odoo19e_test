@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Monthly Performance Computation Cron -->
+        <record id="cron_monthly_performance" model="ir.cron">
+            <field name="name">RMC: Compute Monthly Performance</field>
+            <field name="model_id" ref="model_rmc_contract_agreement"/>
+            <field name="state">code</field>
+            <field name="code">model.search([('state', '=', 'active')]).compute_performance()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">months</field>
+            <field name="active" eval="True"/>
+            <field name="nextcall" eval="(DateTime.now() + relativedelta(day=1, hour=2, minute=0, second=0)).strftime('%Y-%m-%d %H:%M:%S')"/>
+        </record>
+
+        <!-- Attendance auto-sync -->
+        <record id="cron_attendance_auto_sync" model="ir.cron">
+            <field name="name">RMC: Sync Attendance Compliance</field>
+            <field name="model_id" ref="model_rmc_attendance_compliance"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_sync_from_hr_attendance()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="True"/>
+            <field name="nextcall" eval="(DateTime.now() + relativedelta(hour=1, minute=30, second=0)).strftime('%Y-%m-%d %H:%M:%S')"/>
+        </record>
+
+        <!-- Diesel auto-sync -->
+        <record id="cron_diesel_auto_sync" model="ir.cron">
+            <field name="name">RMC: Sync Diesel Logs</field>
+            <field name="model_id" ref="model_rmc_diesel_log"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_sync_from_fleet_issues()</field>
+            <field name="interval_number">2</field>
+            <field name="interval_type">hours</field>
+            <field name="active" eval="True"/>
+            <field name="nextcall" eval="(DateTime.now() + relativedelta(minutes=10, second=0)).strftime('%Y-%m-%d %H:%M:%S')"/>
+        </record>
+
+        <!-- Maintenance auto-sync -->
+        <record id="cron_maintenance_auto_sync" model="ir.cron">
+            <field name="name">RMC: Sync Maintenance Checks</field>
+            <field name="model_id" ref="model_rmc_maintenance_check"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_sync_from_maintenance()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="True"/>
+            <field name="nextcall" eval="(DateTime.now() + relativedelta(hour=2, minute=15, second=0)).strftime('%Y-%m-%d %H:%M:%S')"/>
+        </record>
+
+        <!-- Retention release -->
+        <record id="cron_retention_auto_release" model="ir.cron">
+            <field name="name">RMC: Release Retentions</field>
+            <field name="model_id" ref="model_rmc_agreement_retention"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_release_due_entries()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="True"/>
+            <field name="nextcall" eval="(DateTime.now() + relativedelta(hour=3, minute=0, second=0)).strftime('%Y-%m-%d %H:%M:%S')"/>
+        </record>
+
+    </data>
+</odoo>

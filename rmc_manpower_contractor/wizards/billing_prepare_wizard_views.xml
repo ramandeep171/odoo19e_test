@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo><data>
+<record id="view_billing_prepare_wizard_form" model="ir.ui.view">
+<field name="name">rmc.billing.prepare.wizard.form</field><field name="model">rmc.billing.prepare.wizard</field>
+<field name="arch" type="xml"><form><header>
+<button name="action_compute" string="Compute Amounts" type="object" class="oe_highlight" invisible="state != 'prepare'"/>
+<button name="action_create_bill" string="Create Vendor Bill" type="object" class="oe_highlight" invisible="state != 'review'"/>
+<field name="state" widget="statusbar" statusbar_visible="prepare,review,done"/></header><sheet>
+<group><group><field name="agreement_id" readonly="1"/><field name="contractor_id" readonly="1"/><field name="period_start"/><field name="period_end"/></group><group>
+<field name="performance_score" readonly="1"/><field name="stars" readonly="1"/><field name="prime_output_qty"/><field name="optimized_standby_qty"/><field name="mgq_achieved"/><field name="mgq_target" readonly="1"/><field name="mgq_achievement_pct" readonly="1"/></group></group>
+<group string="Billing Breakdown"><group><field name="part_a_amount" readonly="1"/><field name="part_b_amount" readonly="1"/><field name="breakdown_deduction" readonly="1"/></group><group>
+<field name="bonus_penalty_pct" readonly="1"/><field name="bonus_penalty_amount" readonly="1"/><field name="inventory_variance" readonly="1"/></group></group>
+<group string="Part-A Attendance">
+<group>
+<field name="part_a_raw_total" readonly="1"/>
+<field name="part_a_attendance_adjusted" readonly="1"/>
+</group>
+<group colspan="2">
+<field name="attendance_breakdown_html" widget="html" readonly="1" nolabel="1"/>
+</group>
+</group>
+<group string="Total"><group><field name="subtotal" readonly="1"/><field name="tds_amount" readonly="1"/><field name="total_amount" readonly="1" class="oe_subtotal_footer_separator"/></group><group>
+<field name="attach_attendance"/><field name="attach_diesel"/><field name="attach_maintenance"/><field name="attach_breakdown"/></group></group>
+<field name="notes"/></sheet></form></field></record>
+</data></odoo>

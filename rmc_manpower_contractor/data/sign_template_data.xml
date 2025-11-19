@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- RMC Sign Template pre-seeded with a sample PDF and one signer field -->
+        <record id="sign_template_rmc_contractor" model="sign.template">
+            <field name="name">RMC Contractor Agreement Template</field>
+            <field name="active">True</field>
+        </record>
+
+        <!-- Dedicated roles for agreement signatories -->
+        <record id="sign_role_rmc_company" model="sign.item.role">
+            <field name="name">Company Signatory</field>
+        </record>
+        <record id="sign_role_rmc_contractor" model="sign.item.role">
+            <field name="name">Contractor Signatory</field>
+        </record>
+
+        <!-- Attach sample PDF (reuse Odoo Sign demo contract) -->
+        <record id="sign_attachment_rmc_contractor" model="ir.attachment">
+            <field name="name">RMC Contractor Agreement.pdf</field>
+            <field name="datas" type="base64" file="sign/static/demo/sample_contract.pdf"/>
+            <field name="mimetype">application/pdf</field>
+        </record>
+
+        <!-- Link the PDF to the template -->
+        <record id="sign_document_rmc_contractor" model="sign.document">
+            <field name="attachment_id" ref="sign_attachment_rmc_contractor"/>
+            <field name="template_id" ref="sign_template_rmc_contractor"/>
+            <field name="sequence">1</field>
+        </record>
+
+        <!-- Place a mandatory signature field for the contractor -->
+        <record id="sign_item_rmc_contractor_signature" model="sign.item">
+            <field name="document_id" ref="sign_document_rmc_contractor"/>
+            <field name="type_id" ref="sign.sign_item_type_signature"/>
+            <field name="responsible_id" ref="sign.sign_item_role_default"/>
+            <field name="name">Contractor Signature</field>
+            <field name="page">1</field>
+            <field name="posX">0.45</field>
+            <field name="posY">0.25</field>
+            <field name="width">0.25</field>
+            <field name="height">0.06</field>
+            <field name="alignment">left</field>
+            <field name="required">True</field>
+        </record>
+
+    </data>
+</odoo>

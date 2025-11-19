@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <template id="report_billing_support_sections">
+      <t t-call="web.html_container">
+        <t t-call="web.external_layout">
+          <div class="page">
+            <div class="row align-items-start mb-4">
+              <div class="col-8">
+                <h2 class="mb-2">Supporting Report</h2>
+                <p class="mb-1"><strong>Agreement:</strong> <span t-esc="wizard.agreement_id.display_name"/></p>
+                <p class="mb-1"><strong>Contractor:</strong> <span t-esc="wizard.contractor_id.display_name or wizard.agreement_id.contractor_id.display_name"/></p>
+                <p class="text-muted mb-0"><strong>Billing Period:</strong> <span t-esc="period_label"/></p>
+              </div>
+              <div class="col-4 text-end">
+                <p class="mb-1"><strong>Reference:</strong> <span t-esc="wizard.agreement_id.name"/></p>
+                <p class="text-muted mb-0"><strong>Generated On:</strong> <span t-esc="generated_on"/></p>
+              </div>
+            </div>
+
+            <t t-foreach="sections" t-as="section">
+              <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <h3 class="h5 mb-0" t-esc="section['title']"/>
+                  <small class="text-muted">
+                    <strong>Period:</strong>
+                    <span t-esc="section['period_label']"/>
+                  </small>
+                </div>
+                <p class="text-muted mb-2">
+                  <strong>Agreement:</strong>
+                  <span t-esc="section['agreement_name']"/>
+                </p>
+                <t t-if="section['body_html']">
+                  <div t-raw="section['body_html']"/>
+                </t>
+                <t t-else="">
+                  <p class="text-muted"><em>No records available.</em></p>
+                </t>
+              </div>
+            </t>
+          </div>
+        </t>
+      </t>
+    </template>
+
+  </data>
+</odoo>

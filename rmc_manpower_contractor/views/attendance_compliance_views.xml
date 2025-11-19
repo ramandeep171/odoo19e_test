@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_attendance_compliance_form" model="ir.ui.view">
+            <field name="name">rmc.attendance.compliance.form</field>
+            <field name="model">rmc.attendance.compliance</field>
+            <field name="arch" type="xml">
+                <form string="Attendance Compliance">
+                    <header>
+                        <button name="action_validate"
+                                string="Validate"
+                                type="object"
+                                class="oe_highlight"
+                                invisible="state == 'validated'"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" readonly="1"/>
+                                <field name="agreement_id"/>
+                                <field name="date"/>
+                            </group>
+                            <group>
+                                <field name="headcount_expected" readonly="1"/>
+                                <field name="headcount_present"/>
+                                <field name="documents_ok"/>
+                                <field name="supervisor_ok"/>
+                                <field name="compliance_percentage" readonly="1" widget="progressbar"/>
+                                <field name="first_check_in" readonly="1"/>
+                                <field name="last_check_out" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Present Employees">
+                                <field name="employee_ids" widget="many2many_tags"
+                                       domain="[('id', 'in', agreement_id.driver_ids.ids if agreement_id else [])]"/>
+                            </page>
+                            <page string="Attendance Logs">
+                                <field name="attendance_entry_ids"
+                                       widget="many2many"
+                                       readonly="1"
+                                       nolabel="1"
+                                       context="{'tree_view_ref': 'rmc_manpower_contractor.view_hr_attendance_log_list'}"
+                                       options="{'no_create': True, 'no_create_edit': True, 'no_edit': True, 'no_open': True}"/>
+                            </page>
+                        </notebook>
+                        <field name="notes"/>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_hr_attendance_log_list" model="ir.ui.view">
+            <field name="name">hr.attendance.log.list</field>
+            <field name="model">hr.attendance</field>
+            <field name="arch" type="xml">
+                <list string="Attendance Logs" create="false" edit="false">
+                    <field name="employee_id"/>
+                    <field name="check_in"/>
+                    <field name="check_out"/>
+                    <field name="worked_hours"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_attendance_compliance_tree" model="ir.ui.view">
+            <field name="name">rmc.attendance.compliance.tree</field>
+            <field name="model">rmc.attendance.compliance</field>
+            <field name="arch" type="xml">
+                <list decoration-success="state == 'validated'">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="agreement_id"/>
+                    <field name="headcount_present"/>
+                    <field name="employee_ids" widget="many2many_tags"/>
+                    <field name="first_check_in"/>
+                    <field name="last_check_out"/>
+                    <field name="compliance_percentage"/>
+                    <field name="state" widget="badge"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="action_attendance_compliance" model="ir.actions.act_window">
+            <field name="name">Attendance Compliance</field>
+            <field name="res_model">rmc.attendance.compliance</field>
+            <field name="view_mode">list,form</field>
+        </record>
+    </data>
+</odoo>

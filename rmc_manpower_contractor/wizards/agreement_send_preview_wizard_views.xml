@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_agreement_send_preview_wizard" model="ir.ui.view">
+            <field name="name">rmc.agreement.send.preview.wizard.form</field>
+            <field name="model">rmc.agreement.send.preview.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Preview Contract" create="false" edit="false">
+                    <group>
+                        <group>
+                            <field name="validity_start"/>
+                            <field name="validity_end"/>
+                            <field name="mgq_target" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="part_a_fixed" readonly="1"/>
+                            <field name="part_b_variable" readonly="1"/>
+                            <field name="currency_id" readonly="1"/>
+                            <field name="sign_template_id" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                    <field name="notes" widget="html"/>
+                    <field name="pdf_preview" filename="pdf_filename" widget="pdf_viewer" class="oe_contract_preview"/>
+                    <footer>
+                        <button name="action_apply_changes" type="object" string="Apply &amp; Refresh" class="btn-secondary"/>
+                        <button name="action_prepare_in_sign_app" type="object" string="Prepare in Sign App" class="btn-secondary"/>
+                        <button name="action_send" type="object" string="Send for Signature" class="btn-primary"/>
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

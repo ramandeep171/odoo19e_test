@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_inventory_handover_form" model="ir.ui.view">
+            <field name="name">rmc.inventory.handover.form</field>
+            <field name="model">rmc.inventory.handover</field>
+            <field name="arch" type="xml">
+                <form string="Inventory Handover">
+                    <header>
+                        <button name="action_issue"
+                                string="Issue"
+                                type="object"
+                                class="btn-secondary"
+                                invisible="state != 'draft'"/>
+                        <button name="action_return"
+                                string="Return"
+                                type="object"
+                                class="btn-secondary"
+                                invisible="state != 'issued'"/>
+                        <button name="action_create_inventory_request"
+                                string="Create Inventory Request"
+                                type="object"
+                                class="oe_highlight"
+                                modifiers="{'invisible': ['|', ('picking_id', '!=', False), ('issued_qty', '&lt;=', 0)]}"/>
+                        <button name="action_open_inventory_request"
+                                string="View Inventory Request"
+                                type="object"
+                                class="btn-secondary"
+                                modifiers="{'invisible': [('picking_id', '=', False)]}"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" readonly="1"/>
+                                <field name="agreement_id"/>
+                                <field name="date"/>
+                                <field name="employee_id"
+                                       options="{'no_quick_create': True}"/>
+                                <field name="item_id" context="{'default_type': 'product'}"/>
+                                <field name="uom_id" readonly="1"/>
+                                <field name="is_final"/>
+                                <field name="acknowledged_by"/>
+                                <field name="ack_signature" filename="name"/>
+                            </group>
+                            <group>
+                                <field name="issued_qty"/>
+                                <field name="returned_qty"/>
+                                <field name="variance_qty" readonly="1"/>
+                                <field name="unit_price"/>
+                                <field name="variance_value" readonly="1"/>
+                                <field name="operation_type"/>
+                                <field name="inventory_request_ref" readonly="1"/>
+                                <field name="damage_cost"/>
+                                <field name="settlement_included" readonly="1"/>
+                                <field name="settlement_reference" readonly="1"/>
+                            </group>
+                        </group>
+                        <field name="notes"/>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_inventory_handover_list" model="ir.ui.view">
+            <field name="name">rmc.inventory.handover.list</field>
+            <field name="model">rmc.inventory.handover</field>
+            <field name="arch" type="xml">
+                <list editable="bottom" decoration-danger="variance_qty &gt; 0"
+                      decoration-success="variance_qty &lt; 0">
+                    <field name="item_id" required="1"/>
+                    <field name="issued_qty"/>
+                    <field name="returned_qty"/>
+                    <field name="operation_type"/>
+                    <field name="variance_qty" readonly="1"/>
+                    <field name="variance_value" readonly="1"/>
+                    <field name="is_final"/>
+                    <field name="settlement_included"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="action_inventory_handover" model="ir.actions.act_window">
+            <field name="name">Inventory Handovers</field>
+            <field name="res_model">rmc.inventory.handover</field>
+            <field name="view_mode">list,form</field>
+        </record>
+    </data>
+</odoo>

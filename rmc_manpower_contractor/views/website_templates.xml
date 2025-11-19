@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<template id="agreement_portal_template" name="Agreement Portal">
+<t t-call="website.layout">
+<div id="wrap" class="container">
+<div class="row mt-4">
+<div class="col-12">
+<h1>Contract Agreement - <t t-esc="agreement.name"/></h1>
+<div class="alert alert-success" t-if="agreement.is_agreement_signed">
+<i class="fa fa-check-circle"/> Agreement Signed</div>
+<div class="alert alert-warning" t-elif="agreement.state == 'sign_pending'">
+<i class="fa fa-clock-o"/> Pending Signature</div>
+</div></div>
+<div class="row mt-3">
+<div class="col-md-6">
+<h3>Agreement Details</h3>
+<table class="table table-sm">
+<tr><th>Contractor:</th><td><t t-esc="agreement.contractor_id.name"/></td></tr>
+<tr><th>Contract Type:</th><td><t t-esc="dict(agreement._fields['contract_type'].selection).get(agreement.contract_type)"/></td></tr>
+<tr><th>Validity:</th><td><t t-esc="agreement.validity_start"/> to <t t-esc="agreement.validity_end"/></td></tr>
+<tr><th>MGQ Target:</th><td><t t-esc="agreement.mgq_target"/> m³</td></tr>
+</table>
+</div>
+<div class="col-md-6">
+<h3>Performance Metrics</h3>
+<table class="table table-sm">
+<tr><th>Performance Score:</th><td><t t-esc="agreement.performance_score"/>%</td></tr>
+<tr><th>Star Rating:</th><td><t t-esc="agreement.stars"/></td></tr>
+<tr><th>Pending Items:</th><td><span class="badge text-bg-warning" t-if="agreement.pending_items_count &gt; 0"><t t-esc="agreement.pending_items_count"/></span><span class="badge text-bg-success" t-else="">0</span></td></tr>
+</table>
+</div></div>
+<div class="row mt-3" t-if="agreement.contract_type == 'driver_transport'">
+<div class="col-12">
+<h4>Diesel Efficiency KPI Clause</h4>
+<p>This agreement requires tracking of diesel consumption and efficiency metrics. Average diesel efficiency must be maintained at acceptable levels for payment release.</p>
+</div></div>
+<div class="row mt-3" t-if="agreement.contract_type == 'pump_ops'">
+<div class="col-12">
+<h4>Maintenance Compliance Clause</h4>
+<p>This agreement requires regular maintenance checks and compliance reporting. Maintenance compliance percentage affects performance scoring and payment.</p>
+</div></div>
+<div class="row mt-3" t-if="agreement.contract_type == 'accounts_audit'">
+<div class="col-12">
+<h4>Attendance &amp; Compliance Clause</h4>
+<p>This agreement requires daily attendance tracking, document verification, and supervisor sign-off. Compliance percentage directly impacts billing.</p>
+</div></div>
+<div class="row mt-3">
+<div class="col-12">
+<h4>Clause 9: Breakdown &amp; Force Majeure</h4>
+<p>In case of breakdowns, LOTO events, NGT/government shutdowns, or force majeure events, deductions may apply to Part-B variable payment based on responsibility and MGQ achievement. If MGQ is achieved despite shutdown, no deduction applies. For NGT shutdowns, a 50:50 salary share rule applies with standby allowance for essential staff.</p>
+</div></div>
+<div class="row mt-4 mb-4">
+<div class="col-12">
+<t t-set="sign_request" t-value="agreement.sign_request_id"/>
+<t t-set="sign_item" t-value="False"/>
+<t t-set="current_partner_id" t-value="request.env.user.partner_id.id if not request.env.user._is_public() else False"/>
+<t t-if="sign_request">
+    <t t-set="pending_items" t-value="sign_request.request_item_ids.filtered(lambda r: r.state != 'completed')"/>
+    <t t-set="candidate" t-value="pending_items.filtered(lambda r: r.partner_id and r.partner_id.id == current_partner_id)[:1]"/>
+    <t t-set="sign_item" t-value="candidate if candidate else pending_items[:1]"/>
+    <t t-if="sign_item">
+        <t t-set="sign_item" t-value="sign_item[0]"/>
+    </t>
+</t>
+<t t-if="not sign_request">
+    <a t-att-href="'/contract/agreement/%s/send_for_sign' % agreement.id"
+       class="btn btn-primary">
+        <i class="fa fa-pencil"/> Send for Signature
+    </a>
+</t>
+<t t-elif="sign_item and sign_item.access_token">
+    <a t-attf-href="/sign/document/#{sign_item.sign_request_id.id}/#{sign_item.access_token}"
+       class="btn btn-warning">
+        <i class="fa fa-pencil-square-o"/> Complete Signature
+    </a>
+</t>
+<t t-elif="sign_request and sign_request.state == 'signed'">
+    <span class="badge text-bg-success fs-4">
+        <i class="fa fa-check-circle"/> Signed
+    </span>
+</t>
+</div></div>
+</div>
+</t>
+</template>
+
+<template id="portal_my_agreements" name="My Agreements">
+    <t t-call="portal.portal_layout">
+        <t t-set="title">My Agreements</t>
+        <div class="o_portal_wrap">
+            <div class="o_portal_head d-flex justify-content-between align-items-center flex-wrap">
+                <h1 class="mb-0">My Agreements</h1>
+            </div>
+            <div class="o_portal_navbar mb-3 d-flex justify-content-between align-items-start">
+                <h2 class="mb-0">My Agreements</h2>
+                <a class="btn btn-sm btn-secondary" href="/my/home">Back to Portal</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Reference</th>
+                            <th>Status</th>
+                            <th>Validity</th>
+                            <th>Performance</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-if="agreements">
+                            <t t-foreach="agreements" t-as="agreement">
+                                <tr>
+                                    <td>
+                                        <span class="fw-semibold"><t t-esc="agreement.name"/></span>
+                                        <div class="text-muted small">
+                                            <t t-esc="dict(agreement._fields['contract_type'].selection).get(agreement.contract_type)"/>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge text-bg-primary" t-if="agreement.state == 'active'">Active</span>
+                                        <span class="badge text-bg-warning" t-elif="agreement.state == 'sign_pending'">Pending Signature</span>
+                                        <span class="badge text-bg-secondary" t-else=""><t t-esc="dict(agreement._fields['state'].selection).get(agreement.state)"/></span>
+                                    </td>
+                                    <td>
+                                        <div><t t-esc="agreement.validity_start or '-'"/> → <t t-esc="agreement.validity_end or '-'"/></div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span><t t-esc="agreement.performance_score"/>%</span>
+                                            <span class="badge bg-light text-dark" t-esc="agreement.stars or '-'"/>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a t-att-href="agreement.dynamic_web_path or ('/contract/agreement/%s' % agreement.id)"
+                                           class="btn btn-sm btn-outline-primary">
+                                            View
+                                        </a>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                        <tr t-else="">
+                            <td colspan="5" class="text-center text-muted py-5">
+                                No agreements found.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <t t-if="pager">
+                <t t-set="page" t-value="pager.get('page', {})"/>
+                <t t-set="page_num" t-value="page.get('num', 1)"/>
+                <t t-set="page_count" t-value="pager.get('page_count', 1)"/>
+                <t t-set="prev_url" t-value="pager.get('page_previous', {}).get('url')"/>
+                <t t-set="next_url" t-value="pager.get('page_next', {}).get('url')"/>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <span class="text-muted">
+                        Page <t t-esc="page_num"/> of <t t-esc="page_count"/>
+                    </span>
+                    <div class="btn-group">
+                        <a t-if="prev_url"
+                           t-att-href="prev_url"
+                           class="btn btn-outline-secondary btn-sm">Previous</a>
+                        <a t-if="next_url"
+                           t-att-href="next_url"
+                           class="btn btn-outline-secondary btn-sm">Next</a>
+                    </div>
+                </div>
+            </t>
+        </div>
+    </t>
+</template>
+
+<template id="portal_my_home_agreements" inherit_id="portal.portal_my_home" name="Agreements Tile">
+    <xpath expr="//div[@id='portal_common_category']" position="inside">
+        <t t-call="portal.portal_docs_entry">
+            <t t-set="icon" t-value="'/web/static/img/icons/Description.svg'"/>
+            <t t-set="title"><![CDATA[Agreements]]></t>
+            <t t-set="text">Review and sign your contractor agreements</t>
+            <t t-set="url" t-value="'/my/agreements'"/>
+            <t t-set="placeholder_count" t-value="'agreement_count'"/>
+            <t t-set="count" t-value="request.session.get('portal_counters', {}).get('agreement_count', 0)"/>
+            <t t-set="show_count" t-value="True"/>
+            <t t-set="config_card" t-value="True"/>
+        </t>
+    </xpath>
+</template>
+
+</data>
+</odoo>

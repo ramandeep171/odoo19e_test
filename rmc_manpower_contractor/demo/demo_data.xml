@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo><data noupdate="1">
+<!-- Demo Contractor Partners -->
+<record id="partner_contractor_transport" model="res.partner">
+<field name="name">ABC Transport Services</field>
+<field name="supplier_rank">1</field>
+<field name="email">abc@transport.com</field>
+</record>
+<record id="partner_contractor_pump" model="res.partner">
+<field name="name">XYZ Pump Operations</field>
+<field name="supplier_rank">1</field>
+<field name="email">xyz@pumpops.com</field>
+</record>
+<!-- Demo Agreements -->
+<record id="demo_agreement_transport" model="rmc.contract.agreement">
+<field name="name">RMCA-DEMO-001</field>
+<field name="contractor_id" ref="partner_contractor_transport"/>
+<field name="contract_type">driver_transport</field>
+<field name="state">draft</field>
+<field name="validity_start" eval="(DateTime.now() - relativedelta(months=1)).strftime('%Y-%m-%d')"/>
+<field name="validity_end" eval="(DateTime.now() + relativedelta(months=11)).strftime('%Y-%m-%d')"/>
+<field name="mgq_target">1000</field>
+<field name="part_a_fixed">50000</field>
+<field name="part_b_variable">30000</field>
+<field name="sign_template_id" ref="sign_template_rmc_contractor"/>
+</record>
+<record id="demo_agreement_pump" model="rmc.contract.agreement">
+<field name="name">RMCA-DEMO-002</field>
+<field name="contractor_id" ref="partner_contractor_pump"/>
+<field name="contract_type">pump_ops</field>
+<field name="state">draft</field>
+<field name="validity_start" eval="(DateTime.now() - relativedelta(months=1)).strftime('%Y-%m-%d')"/>
+<field name="validity_end" eval="(DateTime.now() + relativedelta(months=11)).strftime('%Y-%m-%d')"/>
+<field name="mgq_target">800</field>
+<field name="part_a_fixed">60000</field>
+<field name="part_b_variable">40000</field>
+</record>
+<!-- Demo Manpower Matrix -->
+<record id="demo_matrix_1" model="rmc.manpower.matrix">
+<field name="agreement_id" ref="demo_agreement_transport"/>
+<field name="designation">Driver</field>
+<field name="headcount">5</field>
+<field name="shift">day</field>
+<field name="base_rate">10000</field>
+<field name="remark">part_a</field>
+</record>
+<!-- Demo Diesel Log -->
+<record id="demo_diesel_log_1" model="rmc.diesel.log">
+<field name="agreement_id" ref="demo_agreement_transport"/>
+<field name="date" eval="DateTime.now().strftime('%Y-%m-%d')"/>
+<field name="opening_ltr">500</field>
+<field name="issued_ltr">100</field>
+<field name="closing_ltr">400</field>
+<field name="work_done_km">450</field>
+<field name="state">draft</field>
+</record>
+</data></odoo>

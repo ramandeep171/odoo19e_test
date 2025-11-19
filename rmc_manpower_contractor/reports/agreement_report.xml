@@ -1,0 +1,627 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+    <data>
+
+        <record id="action_report_agreement_contract" model="ir.actions.report">
+            <field name="name">Contract Agreement</field>
+            <field name="model">rmc.contract.agreement</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">rmc_manpower_contractor.report_agreement_contract</field>
+            <field name="report_file">rmc_manpower_contractor.report_agreement_contract</field>
+            <field name="print_report_name">
+                (object.name or 'Agreement') + ' - Contract.pdf'
+            </field>
+            <field name="binding_model_id" ref="model_rmc_contract_agreement"/>
+            <field name="binding_type">report</field>
+        </record>
+
+<template id="report_agreement_contract">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-set="company" t-value="doc.company_id or doc.env.company"/>
+            <t t-set="contractor" t-value="doc.contractor_id"/>
+            <t t-set="company_partner" t-value="company.partner_id or company.commercial_partner_id"/>
+            <t t-set="company_address" t-value="company_partner and company_partner._display_address(without_company=True) or ''"/>
+            <t t-set="company_website" t-value="(company.website or (company_partner and company_partner.website) or '').strip()"/>
+            <t t-set="company_website_href"
+               t-value="company_website if company_website and (company_website.startswith('http://') or company_website.startswith('https://')) else (('https://' + company_website) if company_website else '')"/>
+            <t t-set="contractor_company_partner" t-value="contractor.parent_id or contractor"/>
+            <t t-set="contractor_company_name" t-value="contractor_company_partner and contractor_company_partner.name or contractor.display_name"/>
+            <t t-set="contractor_address" t-value="contractor_company_partner and contractor_company_partner._display_address(without_company=True) or ''"/>
+            <t t-set="contractor_website" t-value="(contractor_company_partner and contractor_company_partner.website or contractor.website or '').strip()"/>
+            <t t-set="contractor_website_href"
+               t-value="contractor_website if contractor_website and (contractor_website.startswith('http://') or contractor_website.startswith('https://')) else (('https://' + contractor_website) if contractor_website else '')"/>
+            <t t-set="contractor_phone" t-value="contractor.phone or contractor_company_partner and contractor_company_partner.phone"/>
+            <t t-set="contractor_email" t-value="contractor.email or contractor_company_partner and contractor_company_partner.email"/>
+            <t t-call="web.external_layout">
+        <div class="page" style="display: flex; flex-direction: column; min-height: 260mm; height: auto;">
+                    <div class="agreement-body" style="flex: 1 1 auto; display: flex; flex-direction: column;">
+                    <div class="text-center mb-3">
+                        <h2 class="mb-1">
+                            <span t-esc="company.name or 'Company'"/> – Contractor Agreement
+                        </h2>
+                        <p class="small text-muted mb-0">
+                            Reference: <span t-esc="doc.name"/>
+                        </p>
+                    </div>
+
+                    <table class="table table-sm border mb-4">
+                        <tbody>
+                            <tr>
+                                <th class="w-25">Company</th>
+                                <td>
+                                    <strong t-esc="company.name"/>
+                                    <div t-if="company_address">
+                                        <p class="mb-0" t-esc="company_address"/>
+                                    </div>
+                                    <div t-if="company.vat">
+                                        GST/VAT: <span t-esc="company.vat"/>
+                                    </div>
+                                    <div t-if="company.phone">
+                                        Phone: <span t-esc="company.phone"/>
+                                    </div>
+                                    <div t-if="company.email">
+                                        Email: <span t-esc="company.email"/>
+                                    </div>
+                                    <div t-if="company_website">
+                                        Website:
+                                        <a t-att-href="company_website_href" t-esc="company_website"/>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Contractor</th>
+                                <td>
+                                    <strong t-esc="contractor_company_name or '-'"/>
+                                    <div t-if="contractor != contractor_company_partner">
+                                        Contact: <span t-esc="contractor.name"/>
+                                    </div>
+                                    <div t-if="contractor_address">
+                                        <p class="mb-0" t-esc="contractor_address"/>
+                                    </div>
+                                    <div t-if="contractor.vat">
+                                        GST/VAT: <span t-esc="contractor.vat"/>
+                                    </div>
+                                    <div t-if="contractor_phone">
+                                        Phone: <span t-esc="contractor_phone"/>
+                                    </div>
+                                    <div t-if="contractor_email">
+                                        Email: <span t-esc="contractor_email"/>
+                                    </div>
+                                    <div t-if="contractor_website">
+                                        Website:
+                                        <a t-att-href="contractor_website_href" t-esc="contractor_website"/>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Project / Contract Type</th>
+                                <td>
+                                    <span t-esc="dict(doc._fields['contract_type'].selection).get(doc.contract_type)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Validity</th>
+                                <td>
+                                    <span t-esc="doc.validity_start or '-'"/> 
+                                    <span t-esc="doc.validity_end or '-'"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Contract Amount</th>
+                                <td>
+                                    <div>
+                                        Part-A (Fixed): <span t-esc="doc.currency_id.symbol"/> <span t-esc="('%0.2f' % doc.part_a_fixed)"/>
+                                    </div>
+                                    <div>
+                                        Part-B (Variable): <span t-esc="doc.currency_id.symbol"/> <span t-esc="('%0.2f' % doc.part_b_variable)"/>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>MGQ Target</th>
+                                <td>
+                                    <span t-esc="doc.mgq_target"/> m³ per month
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                   
+
+                    <t t-if="doc.contract_type == 'pump_ops'">
+                        <t t-set="annex_clauses" t-value="doc.clause_ids.filtered(lambda c: c.title and c.title.lower().startswith('annexure'))"/>
+                        <t t-set="main_clauses" t-value="doc.clause_ids - annex_clauses"/>
+                    </t>
+                    <t t-else="">
+                        <t t-set="annex_clauses" t-value="doc.env['rmc.agreement.clause'].browse()"/>
+                        <t t-set="main_clauses" t-value="doc.clause_ids"/>
+                    </t>
+
+                    <t t-if="main_clauses">
+                        <t t-foreach="main_clauses" t-as="clause">
+                            <div class="clause-block" style="page-break-inside: avoid;">
+                                <h4 class="mt-4">
+                                    <span t-esc="clause.title"/>
+                                </h4>
+                                <div class="clause-body mb-3" t-if="clause.body_html" t-raw="clause.body_html"/>
+                                <div class="clause-body mb-3 text-muted" t-else="">
+                                    <em>No content provided.</em>
+                                </div>
+                            </div>
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <h4>Standard Terms &amp; Conditions</h4>
+                        <ol>
+                            <li>
+                                All deployed staff must follow safety, PPE, and operational SOPs prescribed by
+                                <span t-esc="company.name"/>.
+                            </li>
+                            <li>
+                                Diesel efficiency, maintenance compliance, and attendance records shall be
+                                submitted daily. Persistent underperformance triggers penalty per Clause 9.
+                            </li>
+                            <li>
+                                Monthly billing comprises Part-A fixed charges, Part-B variable charges tied to
+                                MGQ achievement, inventory variance, and statutory deductions (inclusive of TDS).
+                            </li>
+                            <li>
+                                Force majeure, NGT directives, and government shutdowns are handled per the
+                                signed Clause 9 addendum; standby allowances must be mutually agreed in writing.
+                            </li>
+                            <li>
+                                Contractor will maintain valid licenses, insurance, and competency certificates
+                                for manpower and vehicles throughout the contract term.
+                            </li>
+                            <li>
+                                Any material issued remains property of <span t-esc="company.name"/> and must be returned
+                                in good condition or adjusted against monthly bills.
+                            </li>
+                        </ol>
+                    </t>
+
+                    <t t-set="company_role" t-value="doc.env.ref('rmc_manpower_contractor.sign_role_rmc_company', raise_if_not_found=False)"/>
+                    <t t-set="contractor_role" t-value="doc.env.ref('rmc_manpower_contractor.sign_role_rmc_contractor', raise_if_not_found=False)"/>
+                    <t t-set="company_sign_item" t-value="doc.sign_request_id.request_item_ids.filtered(lambda r: r.role_id == company_role)[:1] if doc.sign_request_id and company_role else doc.sign_request_id.request_item_ids.browse()"/>
+                    <t t-set="contractor_sign_item" t-value="doc.sign_request_id.request_item_ids.filtered(lambda r: r.role_id == contractor_role)[:1] if doc.sign_request_id and contractor_role else doc.sign_request_id.request_item_ids.browse()"/>
+                    <t t-set="company_sign_partner" t-value="company_sign_item.partner_id if company_sign_item else False"/>
+                    <t t-set="contractor_sign_partner" t-value="contractor_sign_item.partner_id if contractor_sign_item else False"/>
+                    </div>
+
+                    <t t-if="annex_clauses">
+                        <div class="annex-section">
+                            <t t-if="doc.contract_type == 'pump_ops'">
+                                <t t-set="annex_a_clause" t-value="annex_clauses.filtered(lambda c: c.title and c.title.lower().startswith('annexure a'))[:1]"/>
+                                <t t-set="annex_b_clause" t-value="annex_clauses.filtered(lambda c: c.title and c.title.lower().startswith('annexure b'))[:1]"/>
+                                <t t-set="annex_c_clause" t-value="annex_clauses.filtered(lambda c: c.title and c.title.lower().startswith('annexure c'))[:1]"/>
+                                <t t-set="annex_d_clause" t-value="annex_clauses.filtered(lambda c: c.title and c.title.lower().startswith('annexure d'))[:1]"/>
+                                <t t-set="annex_e_clause" t-value="annex_clauses.filtered(lambda c: c.title and c.title.lower().startswith('annexure e'))[:1]"/>
+                                <t t-set="additional_annexes" t-value="annex_clauses.filtered(lambda c: not c.title or not (c.title.lower().startswith('annexure a') or c.title.lower().startswith('annexure b') or c.title.lower().startswith('annexure c') or c.title.lower().startswith('annexure d') or c.title.lower().startswith('annexure e')))"/>
+                                <t t-set="part_a_fixed_amount" t-value="doc.part_a_fixed or 0.0"/>
+                                <t t-set="part_b_variable_amount" t-value="doc.part_b_variable or 0.0"/>
+                                <t t-set="monthly_total_amount" t-value="doc.total_amount if doc.total_amount not in (False, None) else (part_a_fixed_amount + part_b_variable_amount)"/>
+
+                                <div class="annex-block" style="page-break-inside: avoid; break-inside: avoid;">
+                                    <h3 class="mt-0">
+                                    <t t-esc="annex_a_clause.title or 'Annexure A – Manpower Matrix (Illustrative)'"/>
+                                </h3>
+                                <t t-if="annex_a_clause and annex_a_clause.body_html and 'table table-sm border' not in (annex_a_clause.body_html or '')">
+                                    <div t-raw="annex_a_clause.body_html"/>
+                                </t>
+                                <t t-else="">
+                                    <p>The manpower matrix summarises designation-wise headcount, shifts, and payment component. Values reflect the latest data attached to this agreement.</p>
+                                </t>
+                                <t t-if="doc.manpower_matrix_ids">
+                                    <table class="table table-sm border mt-2">
+                                        <thead>
+                                            <tr>
+                                                <th>Job Position</th>
+                                                <th>Assigned Employee</th>
+                                                <th class="text-center">Fleet / Equipment</th>
+                                                <th class="text-center">Shift</th>
+                                                <th class="text-center">Component</th>
+                                                <th class="text-end">Monthly Rate</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr t-foreach="doc.manpower_matrix_ids" t-as="line">
+                                                <td>
+                                                    <span t-esc="(line.employee_id.job_id.name or line.designation or '-')"/>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="line.employee_id.name or '-'"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <t t-set="vehicle_label"
+                                                       t-value="line.vehicle_id.display_name or (line.employee_id and line.employee_id.car_ids and ', '.join(line.employee_id.car_ids.mapped('display_name'))) or '-'"/>
+                                                    <span t-esc="vehicle_label"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span t-esc="dict(line._fields['shift'].selection).get(line.shift)"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span t-esc="dict(line._fields['remark'].selection).get(line.remark)"/>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span t-esc="doc.currency_id.symbol"/> <span t-esc="('%0.2f' % line.total_amount)"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <t t-set="matrix_total" t-value="doc.manpower_matrix_total_amount or sum(l.total_amount for l in doc.manpower_matrix_ids)"/>
+                                        <tfoot t-if="matrix_total">
+                                            <tr>
+                                                <td colspan="5" class="text-end fw-semibold">Total Monthly Rate</td>
+                                                <td class="text-end">
+                                                    <span t-esc="doc.currency_id.symbol"/> <span t-esc="('%0.2f' % matrix_total)"/>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </t>
+                                <t t-else="">
+                                    <table class="table table-sm border mt-2">
+                                        <thead>
+                                            <tr>
+                                                <th>Post / Category</th>
+                                                <th class="text-center">Headcount</th>
+                                                <th class="text-center">Shift</th>
+                                                <th class="text-center">Fixed Salary / Head</th>
+                                                <th class="text-center">Component</th>
+                                                <th class="text-center">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Senior Batching Plant Operator</td>
+                                                <td class="text-center">2</td>
+                                                <td class="text-center">A/B</td>
+                                                <td class="text-center">—</td>
+                                                <td class="text-center">Part-A</td>
+                                                <td class="text-center">—</td>
+                                            </tr>
+                                            <tr>
+                                                <td>JCB Operator</td>
+                                                <td class="text-center">2</td>
+                                                <td class="text-center">A/B</td>
+                                                <td class="text-center">—</td>
+                                                <td class="text-center">Part-A</td>
+                                                <td class="text-center">—</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Lab Helper</td>
+                                                <td class="text-center">4</td>
+                                                <td class="text-center">A/B</td>
+                                                <td class="text-center">—</td>
+                                                <td class="text-center">Part-A</td>
+                                                <td class="text-center">—</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Batching Plant Helper</td>
+                                                <td class="text-center">4</td>
+                                                <td class="text-center">A/B</td>
+                                                <td class="text-center">—</td>
+                                                <td class="text-center">Part-A</td>
+                                                <td class="text-center">—</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Welder (Maintenance)</td>
+                                                <td class="text-center">1</td>
+                                                <td class="text-center">A/B</td>
+                                                <td class="text-center">—</td>
+                                                <td class="text-center">Part-B</td>
+                                                <td class="text-center">—</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Maintenance In-charge / Engineer</td>
+                                                <td class="text-center">1</td>
+                                                <td class="text-center">A/B</td>
+                                                <td class="text-center">—</td>
+                                                <td class="text-center">Part-B</td>
+                                                <td class="text-center">—</td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                             <tr>
+                                                <td colspan="6" class="text-muted ">
+                                                    <strong>Total Contract Value:</strong><td><span t-esc="doc.currency_id.symbol"/> <span t-esc="('%0.2f' % monthly_total_amount)"/></td>
+                                                    Inclusive of all manpower components under Part-A and Part-B. Taxes extra.
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </t>
+                                </div>
+                                <div class="annex-block" style="page-break-inside: avoid; break-inside: avoid;">
+                                    <h3 class="mt-5">
+                                    <t t-esc="annex_b_clause.title or 'Annexure B – MGQ &amp; Variable Rate'"/>
+                                </h3>
+                                <t t-if="annex_b_clause and annex_b_clause.body_html">
+                                    <div t-raw="annex_b_clause.body_html"/>
+                                </t>
+                                <t t-else="">
+                                    <p>Monthly MGQ targets, Part-A fixed value, and Part-B variable payouts are detailed below. MGQ achievement shall be validated through company production reports.</p>
+                                </t>
+                                <table class="table table-sm border w-75">
+                                    <tbody>
+                                        <tr>
+                                            <th class="w-50">MGQ Target</th>
+                                            <td><span t-esc="doc.mgq_target or 0.0"/> m³</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Part-A (Fixed)</th>
+                                            <td><span t-esc="doc.currency_id.symbol"/> <span t-esc="('%0.2f' % part_a_fixed_amount)"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Part-B (Variable)</th>
+                                            <td><span t-esc="doc.currency_id.symbol"/> <span t-esc="('%0.2f' % part_b_variable_amount)"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Total Monthly Value</th>
+                                            <td><span t-esc="doc.currency_id.symbol"/> <span t-esc="('%0.2f' % monthly_total_amount)"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                </div>
+
+                                <div class="annex-block" style="page-break-inside: avoid; break-inside: avoid;">
+                                    <h3 class="mt-5">
+                                    <t t-esc="annex_c_clause.title or 'Annexure C – Documents Checklist'"/>
+                                </h3>
+                                <t t-if="annex_c_clause and annex_c_clause.body_html">
+                                    <div t-raw="annex_c_clause.body_html"/>
+                                </t>
+                                <t t-else="">
+                                    <ul>
+                                        <li>GST, PAN, labour licence copies, and EPF / ESI registration documents.</li>
+                                        <li>Insurance policies (WC / ESIC) and bank coordinates for payment processing.</li>
+                                        <li>Updated employee KYC dossier including Aadhaar, PAN, photograph, bank proof, and police verification where applicable.</li>
+                                    </ul>
+                                </t>
+                                </div>
+
+                                <div class="annex-block" style="page-break-inside: avoid; break-inside: avoid;">
+                                    <h3 class="mt-5">
+                                    <t t-esc="annex_d_clause.title or 'Annexure D – Contacts &amp; Notices'"/>
+                                </h3>
+                                <table class="table table-sm border">
+                                    <tbody>
+                                        <tr>
+                                            <th class="w-25 align-top">Company</th>
+                                            <td>
+                                                <strong t-esc="company.name"/>
+                                                <div t-if="company_address" class="mt-1">
+                                                    <t t-foreach="company_address.split('\n')" t-as="addr_line">
+                                                        <div><span t-esc="addr_line"/></div>
+                                                    </t>
+                                                </div>
+                                                <div t-if="company.vat">GST/VAT: <span t-esc="company.vat"/></div>
+                                                <div t-if="company.phone">Phone: <span t-esc="company.phone"/></div>
+                                                <div t-if="company.email">Email: <span t-esc="company.email"/></div>
+                                                <div t-if="company_website">
+                                                    Website:
+                                                    <a t-att-href="company_website_href" t-esc="company_website"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="align-top">Contractor</th>
+                                            <td>
+                                                <strong t-esc="contractor_company_name or '-'"/>
+                                                <div t-if="contractor != contractor_company_partner">
+                                                    Contact: <span t-esc="contractor.name"/>
+                                                </div>
+                                                <div t-if="contractor_address" class="mt-1">
+                                                    <t t-foreach="contractor_address.split('\n')" t-as="addr_line">
+                                                        <div><span t-esc="addr_line"/></div>
+                                                    </t>
+                                                </div>
+                                                <div t-if="contractor.vat">GST/VAT: <span t-esc="contractor.vat"/></div>
+                                                <div t-if="contractor_phone">Phone: <span t-esc="contractor_phone"/></div>
+                                                <div t-if="contractor_email">Email: <span t-esc="contractor_email"/></div>
+                                                <div t-if="contractor_website">
+                                                    Website:
+                                                    <a t-att-href="contractor_website_href" t-esc="contractor_website"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                </div>
+
+                                <div class="annex-block" style="page-break-inside: avoid; break-inside: avoid;">
+                                    <h3 class="mt-5">
+                                    <t t-esc="annex_e_clause.title or 'Annexure E – Plant Tools &amp; Inventory'"/>
+                                </h3>
+                                <t t-if="annex_e_clause and annex_e_clause.body_html">
+                                    <div t-raw="annex_e_clause.body_html"/>
+                                </t>
+                                <t t-else="">
+                                    <p>The Contractor acknowledges receipt of plant tools, spares, and safety equipment issued by the Company. Issuance dates, condition, and return status are logged below.</p>
+                                </t>
+                                <t t-if="doc.inventory_handover_ids">
+                                    <table class="table table-sm border">
+                                        <thead>
+                                            <tr>
+                                                <th>Item Description</th>
+                                                <th class="text-center">Quantity</th>
+                                                <th class="text-center">Issue Date</th>
+                                                <th class="text-center">Status</th>
+                                                <th class="text-center">Returned (Yes/No)</th>
+                                                <th>Remarks</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr t-foreach="doc.inventory_handover_ids" t-as="handover">
+                                                <td><span t-esc="handover.item_id.display_name or handover.name or '-'"/></td>
+                                                <td class="text-center">
+                                                    <span t-esc="('%0.2f' % handover.issued_qty)"/>
+                                                    <t t-if="handover.uom_id">
+                                                        <span class="ms-1" t-esc="handover.uom_id.name"/>
+                                                    </t>
+                                                </td>
+                                                <td class="text-center">
+                                                    <t t-if="handover.date">
+                                                        <span t-esc="format_date(doc.env, handover.date)"/>
+                                                    </t>
+                                                    <t t-else="">-</t>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span t-esc="dict(handover._fields['state'].selection).get(handover.state)"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <t t-if="handover.state in ('returned', 'reconciled')">Yes</t>
+                                                    <t t-else="">No</t>
+                                                </td>
+                                                <td><span t-esc="handover.notes or '-'"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </t>
+                                <t t-else="">
+                                    <table class="table table-sm border">
+                                        <thead>
+                                            <tr>
+                                                <th>Item Description</th>
+                                                <th class="text-center">Quantity</th>
+                                                <th class="text-center">Issue Date</th>
+                                                <th class="text-center">Condition</th>
+                                                <th class="text-center">Returned (Yes/No)</th>
+                                                <th>Remarks</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Example: Spanner Set</td>
+                                                <td class="text-center">2 Sets</td>
+                                                <td class="text-center">[Date]</td>
+                                                <td class="text-center">Good</td>
+                                                <td class="text-center">No</td>
+                                                <td>In Use</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Example: Welding Machine</td>
+                                                <td class="text-center">1</td>
+                                                <td class="text-center">[Date]</td>
+                                                <td class="text-center">Good</td>
+                                                <td class="text-center">No</td>
+                                                <td>Maintenance Dept</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Example: Safety Harness</td>
+                                                <td class="text-center">3</td>
+                                                <td class="text-center">[Date]</td>
+                                                <td class="text-center">Average</td>
+                                                <td class="text-center">No</td>
+                                                <td>For Operator Use</td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="6" class="text-muted small">
+                                                    Note: The Contractor is responsible for safe custody and proper use of issued tools. Any loss or damage will be reviewed jointly and settled as per agreed procedure.
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </t>
+                                </div>
+                                <t t-if="additional_annexes">
+                                    <t t-foreach="additional_annexes" t-as="annex_extra">
+                                        <div class="annex-block" style="page-break-inside: avoid; break-inside: avoid;">
+                                            <h3 class="mt-5" t-esc="annex_extra.title"/>
+                                            <div t-if="annex_extra.body_html" t-raw="annex_extra.body_html"/>
+                                            <t t-else="">
+                                                <p class="text-muted"><em>No content provided.</em></p>
+                                            </t>
+                                        </div>
+                                    </t>
+                                </t>
+                            </t>
+                            <t t-else="">
+                                <t t-foreach="annex_clauses" t-as="annex">
+                                    <div class="annex-block" style="page-break-inside: avoid; break-inside: avoid;">
+                                        <h3 class="mt-5" t-esc="annex.title"/>
+                                        <div t-if="annex.body_html" t-raw="annex.body_html"/>
+                                    </div>
+                                </t>
+                            </t>
+                        </div>
+                    </t>
+
+                    <div style="flex-grow: 1;"></div>
+                    <div class="agreement-signatures mt-4" style="margin-top: auto; margin-bottom: 15px; padding-bottom: 0; flex-shrink: 0; page-break-inside: avoid; break-inside: avoid;">
+                    <h4>Signatures</h4>
+                    <table class="table table-sm mt-4" style="margin-bottom: 0;">
+                        <tr>
+                            <td class="w-50">
+                                <strong>For <span t-esc="company.name"/></strong>
+                                <div class="border-top mt-5 pt-2">
+                                    <t t-if="company_sign_partner">
+                                        <span t-esc="company_sign_partner.name"/>
+                                        <t t-if="company_sign_partner.function">
+                                            <br/>
+                                            <span t-esc="company_sign_partner.function"/>
+                                        </t>
+                                    </t>
+                                    <t t-else="">Name &amp; Designation</t>
+                                </div>
+                                <div class="mt-2">
+                                    <span class="fw-semibold">Date:</span>
+                                    <span t-if="company_sign_item and company_sign_item.signing_date">
+                                        <span t-esc="format_date(doc.env, company_sign_item.signing_date)"/>
+                                    </span>
+                                    <span t-else="">____________________</span>
+                                </div>
+                                <div class="mt-2">
+                                    <span class="fw-semibold">Signature:</span>
+                                </div>
+                                <div style="border: 1px solid #bbb; height: 60px; margin-top: 6px; display: flex; align-items: center; justify-content: flex-start; padding: 4px;">
+                                    <img t-if="company_sign_item and company_sign_item.signature"
+                                         t-att-alt="'Signature of %s' % (company_sign_partner.name if company_sign_partner else company.name)"
+                                         t-att-src="'data:image/png;base64,%s' % company_sign_item.signature"
+                                         style="max-height: 100%; max-width: 100%; object-fit: contain;"/>
+                                </div>
+                            </td>
+                            <td class="w-50">
+                                <strong>For <span t-esc="contractor.name or 'Contractor'"/></strong>
+                                <div class="border-top mt-5 pt-2">
+                                    <t t-if="contractor_sign_partner">
+                                        <span t-esc="contractor_sign_partner.name"/>
+                                        <t t-if="contractor_sign_partner.function">
+                                            <br/>
+                                            <span t-esc="contractor_sign_partner.function"/>
+                                        </t>
+                                    </t>
+                                    <t t-else="">Name &amp; Designation</t>
+                                </div>
+                                <div class="mt-2">
+                                    <span class="fw-semibold">Date:</span>
+                                    <span t-if="contractor_sign_item and contractor_sign_item.signing_date">
+                                        <span t-esc="format_date(doc.env, contractor_sign_item.signing_date)"/>
+                                    </span>
+                                    <span t-else="">____________________</span>
+                                </div>
+                                <div class="mt-2">
+                                    <span class="fw-semibold">Signature:</span>
+                                </div>
+                                <div style="border: 1px solid #bbb; height: 60px; margin-top: 6px; display: flex; align-items: center; justify-content: flex-start; padding: 4px;">
+                                    <img t-if="contractor_sign_item and contractor_sign_item.signature"
+                                         t-att-alt="'Signature of %s' % ((contractor_sign_partner and contractor_sign_partner.name) or (contractor.name or 'Contractor'))"
+                                         t-att-src="'data:image/png;base64,%s' % contractor_sign_item.signature"
+                                         style="max-height: 100%; max-width: 100%; object-fit: contain;"/>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    </div>
+
+                    
+                    </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

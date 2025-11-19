@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo><data>
+<menuitem id="menu_rmc_contractors_root" name="RMC Contractors" sequence="50" web_icon="rmc_manpower_contractor,static/description/icon.png"/>
+<menuitem id="menu_rmc_contractors_agreements" name="Agreements" parent="menu_rmc_contractors_root" sequence="10" action="action_rmc_agreement"/>
+<menuitem id="menu_rmc_contractors_operations" name="Operations" parent="menu_rmc_contractors_root" sequence="20"/>
+<menuitem id="menu_rmc_agreement_performance_dashboard" name="Agreement Performance Dashboard" parent="menu_rmc_contractors_root" sequence="40" action="action_rmc_agreement_performance_dashboard"/>
+<menuitem id="menu_rmc_diesel_log" name="Diesel Logs" parent="menu_rmc_contractors_operations" sequence="10" action="action_diesel_log"/>
+<menuitem id="menu_rmc_maintenance" name="Maintenance Checks" parent="menu_rmc_contractors_operations" sequence="20" action="action_maintenance_check"/>
+<menuitem id="menu_rmc_attendance" name="Attendance Compliance" parent="menu_rmc_contractors_operations" sequence="30" action="action_attendance_compliance"/>
+<menuitem id="menu_rmc_breakdown" name="Breakdown Events" parent="menu_rmc_contractors_operations" sequence="40" action="action_breakdown_event"/>
+<menuitem id="menu_rmc_inventory" name="Inventory Handovers" parent="menu_rmc_contractors_operations" sequence="50" action="action_inventory_handover"/>
+</data></odoo>

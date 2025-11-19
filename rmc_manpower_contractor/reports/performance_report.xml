@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo><data>
+<record id="action_report_performance_summary" model="ir.actions.report">
+<field name="name">Performance Summary</field>
+<field name="model">rmc.contract.agreement</field>
+<field name="report_type">qweb-pdf</field>
+<field name="report_name">rmc_manpower_contractor.report_performance_summary_document</field>
+<field name="report_file">rmc_manpower_contractor.report_performance_summary_document</field>
+<field name="binding_model_id" ref="model_rmc_contract_agreement"/>
+<field name="binding_type">report</field>
+</record>
+</data></odoo>

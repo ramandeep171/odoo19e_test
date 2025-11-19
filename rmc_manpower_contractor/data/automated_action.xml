@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Server Action: Activate agreement on sign completion -->
+        <record id="server_action_activate_on_sign" model="ir.actions.server">
+            <field name="name">RMC: Activate Agreement on Sign</field>
+            <field name="model_id" ref="sign.model_sign_request"/>
+            <field name="state">code</field>
+            <field name="code">
+# Find related agreement
+agreement = env['rmc.contract.agreement'].search([('sign_request_id', '=', record.id)], limit=1)
+if agreement:
+    agreement.action_activate_on_sign()
+            </field>
+        </record>
+
+        <!-- Automated Action: Trigger on sign completion -->
+        <record id="action_activate_on_sign" model="base.automation">
+            <field name="name">RMC: Activate Agreement on Sign</field>
+            <field name="model_id" ref="sign.model_sign_request"/>
+            <field name="trigger">on_write</field>
+            <field name="filter_domain">[('state', '=', 'signed')]</field>
+            <field name="action_server_ids" eval="[(4, ref('server_action_activate_on_sign'))]"/>
+        </record>
+
+    </data>
+</odoo>

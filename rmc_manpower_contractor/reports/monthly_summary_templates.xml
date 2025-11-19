@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo><data>
+<template id="report_performance_summary_document">
+<t t-call="web.html_container">
+<t t-foreach="docs" t-as="o">
+<t t-call="web.external_layout">
+<div class="page">
+<h2>Monthly Performance Summary</h2>
+<p><strong>Agreement:</strong> <span t-field="o.name"/></p>
+<p><strong>Contractor:</strong> <span t-field="o.contractor_id.name"/></p>
+<p><strong>Contract Type:</strong> <span t-field="o.contract_type"/></p>
+<h3>Performance Metrics</h3>
+<table class="table table-sm">
+<tr><th>Performance Score:</th><td><span t-field="o.performance_score"/>%</td></tr>
+<tr><th>Star Rating:</th><td><span t-field="o.stars"/></td></tr>
+<tr><th>Diesel Efficiency:</th><td><span t-field="o.avg_diesel_efficiency"/></td></tr>
+<tr><th>Maintenance Compliance:</th><td><span t-field="o.maintenance_compliance"/>%</td></tr>
+<tr><th>Attendance Compliance:</th><td><span t-field="o.attendance_compliance"/>%</td></tr>
+<tr><th>Payment Hold:</th><td><span t-if="o.payment_hold" class="text-danger">YES</span><span t-else="" class="text-success">NO</span></td></tr>
+</table>
+<div t-if="o.payment_hold">
+<h4>Payment Hold Reasons:</h4>
+<p t-field="o.payment_hold_reason"/>
+</div>
+</div>
+</t>
+</t>
+</t>
+</template>
+</data></odoo>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_manpower_matrix_list" model="ir.ui.view">
+            <field name="name">rmc.manpower.matrix.list</field>
+            <field name="model">rmc.manpower.matrix</field>
+            <field name="arch" type="xml">
+                <list editable="bottom">
+                    <field name="agreement_id"/>
+                    <field name="designation"/>
+                    <field name="job_position_name" readonly="1"/>
+                    <field name="employee_id"/>
+                    <field name="vehicle_id"/>
+                    <field name="headcount"/>
+                    <field name="shift"/>
+                    <field name="base_rate"/>
+                    <field name="remark"/>
+                    <field name="attendance_present_days" optional="show"/>
+                    <field name="attendance_total_days" optional="show"/>
+                    <field name="attendance_ratio" optional="show"/>
+                    <field name="attendance_prorated_amount" optional="show"/>
+                    <field name="attendance_deduction_amount" optional="show"/>
+                    <field name="total_amount" sum="Total"/>
+                </list>
+            </field>
+        </record>
+    </data>
+</odoo>

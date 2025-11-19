@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_create_current_month_billing_log" model="ir.actions.server">
+            <field name="name">Create Current Month Log</field>
+            <field name="model_id" ref="model_rmc_billing_prepare_log"/>
+            <field name="state">code</field>
+            <field name="code">action = env['rmc.billing.prepare.log'].action_create_current_month_log()</field>
+        </record>
+
+        <record id="view_rmc_billing_prepare_log_list" model="ir.ui.view">
+            <field name="name">rmc.billing.prepare.log.list</field>
+            <field name="model">rmc.billing.prepare.log</field>
+            <field name="arch" type="xml">
+                <list string="Monthly Billing Logs" create="false" edit="false" delete="false">
+                    <header>
+                        <button name="%(rmc_manpower_contractor.action_create_current_month_billing_log)d"
+                                type="action"
+                                string="New"
+                                class="oe_highlight"/>
+                    </header>
+                    <field name="name"/>
+                    <field name="agreement_id"/>
+                    <field name="category"/>
+                    <field name="period_start"/>
+                    <field name="period_end"/>
+                    <field name="mgq_achieved"/>
+                    <field name="prime_output_qty"/>
+                    <field name="optimized_standby_qty"/>
+                    <field name="mgq_achievement_pct"/>
+                    <field name="part_a_raw_total" optional="show"/>
+                    <field name="part_a_attendance_adjusted" optional="show"/>
+                    <field name="part_a_amount"/>
+                    <field name="part_b_amount"/>
+                    <field name="bonus_penalty_amount"/>
+                    <field name="tds_amount"/>
+                    <field name="total_amount"/>
+                    <field name="bill_id"/>
+                    <field name="created_on"/>
+                    <field name="created_by"/>
+                    <field name="state" widget="badge"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_rmc_billing_prepare_log_form" model="ir.ui.view">
+            <field name="name">rmc.billing.prepare.log.form</field>
+            <field name="model">rmc.billing.prepare.log</field>
+            <field name="arch" type="xml">
+                <form string="Monthly Billing Log" create="false">
+                    <header>
+                        <button name="action_prepare_monthly_bill" type="object" class="oe_highlight" string="Prepare Monthly Bill"/>
+                        <button name="action_create_new_log" type="object" class="btn-secondary" string="New" invisible="not agreement_id"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,review,done,paid"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="agreement_id" readonly="1"/>
+                                <field name="bill_id" readonly="1"/>
+                                <field name="state" readonly="1"/>
+                                <field name="created_on" readonly="1"/>
+                                <field name="created_by" readonly="1"/>
+                                <field name="category" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="period_start"/>
+                                <field name="period_end"/>
+                                <field name="mgq_target" readonly="1"/>
+                                <field name="mgq_achieved" readonly="1"/>
+                                <field name="prime_output_qty"/>
+                                <field name="optimized_standby_qty"/>
+                                <field name="mgq_achievement_pct" readonly="1"/>
+                            </group>
+                        </group>
+                        <group string="Performance Dashboard" col="4">
+                            <field name="dashboard_performance_score" widget="progressbar" readonly="1"/>
+                            <field name="dashboard_star_rating" widget="badge" readonly="1"/>
+                            <field name="dashboard_diesel_efficiency" readonly="1"/>
+                            <field name="dashboard_diesel_efficiency_bar"
+                                   widget="html"
+                                   nolabel="1"
+                                   readonly="1"
+                                   colspan="2"
+                                   class="o_diesel_efficiency_gauge"/>
+                            <field name="dashboard_maintenance_compliance" widget="progressbar" readonly="1"/>
+                            <field name="dashboard_attendance_compliance" widget="progressbar" readonly="1"/>
+                        </group>
+                        <group string="Financial Snapshot">
+                            <group>
+                                <field name="part_a_raw_total" readonly="1"/>
+                                <field name="part_a_attendance_adjusted" readonly="1"/>
+                                <field name="part_a_amount" readonly="1"/>
+                                <field name="part_b_amount" readonly="1"/>
+                                <field name="breakdown_deduction" readonly="1"/>
+                                <field name="inventory_variance" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="bonus_penalty_pct" readonly="1"/>
+                                <field name="bonus_penalty_amount" readonly="1"/>
+                                <field name="subtotal" readonly="1"/>
+                                <field name="tds_amount" readonly="1"/>
+                                <field name="total_amount" readonly="1"/>
+                                <field name="settlement_hold" readonly="1"/>
+                                <field name="settlement_hold_reason" readonly="1" invisible="not settlement_hold"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Attendance">
+                                <group>
+                                    <field name="attach_attendance" readonly="1"/>
+                                    <field name="attendance_attachment_id" readonly="1" context="{'create': False}"/>
+                                </group>
+                                <field name="attendance_preview_html" widget="html" readonly="1"/>
+                                <separator string="Part-A Attendance Breakdown"/>
+                                <field name="attendance_breakdown_html" widget="html" readonly="1"/>
+                            </page>
+                            <page string="Diesel">
+                                <group>
+                                    <field name="attach_diesel" readonly="1"/>
+                                    <field name="diesel_attachment_id" readonly="1" context="{'create': False}"/>
+                                </group>
+                                <field name="diesel_preview_html" widget="html" readonly="1"/>
+                            </page>
+                            <page string="Maintenance">
+                                <group>
+                                    <field name="attach_maintenance" readonly="1"/>
+                                    <field name="maintenance_attachment_id" readonly="1" context="{'create': False}"/>
+                                </group>
+                                <field name="maintenance_preview_html" widget="html" readonly="1"/>
+                            </page>
+                            <page string="Breakdown">
+                                <group>
+                                    <field name="attach_breakdown" readonly="1"/>
+                                    <field name="breakdown_attachment_id" readonly="1" context="{'create': False}"/>
+                                </group>
+                                <field name="breakdown_preview_html" widget="html" readonly="1"/>
+                            </page>
+                            <page string="All Attachments">
+                                <field name="attachment_ids" widget="many2many_binary" readonly="1"/>
+                            </page>
+                        </notebook>
+                        <field name="notes" readonly="1"/>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_rmc_billing_prepare_log" model="ir.actions.act_window">
+            <field name="name">Monthly Billing Logs</field>
+            <field name="res_model">rmc.billing.prepare.log</field>
+            <field name="view_mode">list,kanban,graph,form</field>
+            <field name="context">{}</field>
+        </record>
+    </data>
+</odoo>

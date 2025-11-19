@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="website_manpower_partner_page_content">
+            <div class="o_manpower_partner">
+
+                    <section class="hero">
+                        <div class="hero-overlay"></div>
+                        <div class="container">
+                            <div class="hero-content">
+                                <h1 class="hero-title">Become Our Manpower Partner</h1>
+                                <p class="hero-subtitle">Reliable shifts, timely payments, long-term engagements.</p>
+                                <div class="hero-buttons">
+                                    <a href="#apply" class="btn btn-primary">
+                                        <i class="fas fa-handshake"></i>
+                                        <span>Apply as Contractor</span>
+                                    </a>
+                                    <a href="/contactus" class="btn btn-secondary">
+                                        <i class="fas fa-download"></i>
+                                        <span>Download Terms (PDF)</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="benefits" class="section benefits">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">Why Partner With Us</h2>
+                                <p class="section-subtitle">Experience the advantages of working with a trusted infrastructure leader</p>
+                            </div>
+                            <div class="benefits-grid">
+                                <div class="benefit-card">
+                                    <div class="benefit-icon"><i class="fas fa-chart-line"></i></div>
+                                    <h3>Guaranteed Monthly Volumes</h3>
+                                    <p>Benefit from Minimum Guarantee Quantity (MGQ) ensuring consistent work and revenue flow.</p>
+                                </div>
+                                <div class="benefit-card">
+                                    <div class="benefit-icon"><i class="fas fa-money-check-alt"></i></div>
+                                    <h3>Transparent Billing &amp; Payouts</h3>
+                                    <p>On-time payments with TDS-compliant processing and clear billing cycles.</p>
+                                </div>
+                                <div class="benefit-card">
+                                    <div class="benefit-icon"><i class="fas fa-digital-tachograph"></i></div>
+                                    <h3>Digital Logs &amp; Tracking</h3>
+                                    <p>Real-time attendance, maintenance records, and diesel consumption tracking.</p>
+                                </div>
+                                <div class="benefit-card">
+                                    <div class="benefit-icon"><i class="fas fa-file-signature"></i></div>
+                                    <h3>Odoo Sign E-Contracts</h3>
+                                    <p>Quick, paperless contracts with secure digital signatures and portal access.</p>
+                                </div>
+                                <div class="benefit-card">
+                                    <div class="benefit-icon"><i class="fas fa-hard-hat"></i></div>
+                                    <h3>Safety-First Culture</h3>
+                                    <p>PPE requirements, LOTO procedures, and comprehensive compliance support.</p>
+                                </div>
+                                <div class="benefit-card">
+                                    <div class="benefit-icon"><i class="fas fa-sync-alt"></i></div>
+                                    <h3>Renewal Opportunities</h3>
+                                    <p>Performance-based contract renewals for consistent, long-term partnerships.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="contract-types" class="section contract-types">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">Contract Types Available</h2>
+                                <p class="section-subtitle">Choose from multiple partnership opportunities</p>
+                            </div>
+                            <div class="contract-cards">
+                                <div class="contract-card">
+                                    <div class="contract-icon"><i class="fas fa-truck"></i></div>
+                                    <h3>Driver/Transport Operations</h3>
+                                    <p>Supply skilled drivers and transport operation staff for our infrastructure projects.</p>
+                                    <ul class="contract-features">
+                                        <li><i class="fas fa-check"></i> Multi-shift operations</li>
+                                        <li><i class="fas fa-check"></i> Fleet management support</li>
+                                        <li><i class="fas fa-check"></i> Digital trip logging</li>
+                                    </ul>
+                                </div>
+                                <div class="contract-card featured">
+                                    <div class="badge">Most Popular</div>
+                                    <div class="contract-icon"><i class="fas fa-water"></i></div>
+                                    <h3>Pump Operations Manpower</h3>
+                                    <p>Provide trained pump operators and maintenance staff for concrete operations.</p>
+                                    <ul class="contract-features">
+                                        <li><i class="fas fa-check"></i> 24/7 shift coverage</li>
+                                        <li><i class="fas fa-check"></i> Technical expertise</li>
+                                        <li><i class="fas fa-check"></i> Equipment handling</li>
+                                    </ul>
+                                </div>
+                                <div class="contract-card">
+                                    <div class="contract-icon"><i class="fas fa-calculator"></i></div>
+                                    <h3>Accounts &amp; Audit Manpower</h3>
+                                    <p>Deploy qualified accounting and audit professionals for financial operations.</p>
+                                    <ul class="contract-features">
+                                        <li><i class="fas fa-check"></i> CA/CMA qualified staff</li>
+                                        <li><i class="fas fa-check"></i> ERP experience</li>
+                                        <li><i class="fas fa-check"></i> Compliance expertise</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="requirements" class="section requirements">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">Eligibility Requirements</h2>
+                                <p class="section-subtitle">Ensure you meet these criteria before applying</p>
+                            </div>
+                            <div class="requirements-grid">
+                                <div class="requirement-item">
+                                    <div class="req-number">1</div>
+                                    <h3>Legal Compliance</h3>
+                                    <p>Valid GST, PAN, Labour Licence, ESIC/PF registrations with all documentation up to date.</p>
+                                </div>
+                                <div class="requirement-item">
+                                    <div class="req-number">2</div>
+                                    <h3>Insurance &amp; Safety</h3>
+                                    <p>Comprehensive insurance coverage and strict adherence to PPE and safety protocols.</p>
+                                </div>
+                                <div class="requirement-item">
+                                    <div class="req-number">3</div>
+                                    <h3>Team Capacity</h3>
+                                    <p>Minimum team capacity and proven ability to handle multi-shift operations effectively.</p>
+                                </div>
+                                <div class="requirement-item">
+                                    <div class="req-number">4</div>
+                                    <h3>Digital Readiness</h3>
+                                    <p>Agreement to use digital reporting systems and Odoo portal for all operations.</p>
+                                </div>
+                            </div>
+                            <div class="documents-section">
+                                <h3 class="documents-title">Required Documents Checklist</h3>
+                                <div class="documents-grid">
+                                    <div class="document-item"><i class="fas fa-file-invoice"></i>GST Registration Certificate</div>
+                                    <div class="document-item"><i class="fas fa-id-card"></i>PAN Card</div>
+                                    <div class="document-item"><i class="fas fa-certificate"></i>Labour Licence</div>
+                                    <div class="document-item"><i class="fas fa-shield-alt"></i>ESIC/PF Registration</div>
+                                    <div class="document-item"><i class="fas fa-university"></i>Cancelled Cheque &amp; Bank Details</div>
+                                    <div class="document-item"><i class="fas fa-star"></i>Past Performance / Reference</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="section how-it-works">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">How It Works</h2>
+                                <p class="section-subtitle">Simple 6-step process to become our partner</p>
+                            </div>
+                            <div class="steps-container">
+                                <div class="step">
+                                    <div class="step-number">1</div>
+                                    <div class="step-content">
+                                        <h3>Apply Online</h3>
+                                        <p>Fill out the contractor application form below</p>
+                                    </div>
+                                </div>
+                                <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+                                <div class="step">
+                                    <div class="step-number">2</div>
+                                    <div class="step-content">
+                                        <h3>Document Verification</h3>
+                                        <p>Our team reviews your credentials</p>
+                                    </div>
+                                </div>
+                                <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+                                <div class="step">
+                                    <div class="step-number">3</div>
+                                    <div class="step-content">
+                                        <h3>E-Sign Contract</h3>
+                                        <p>Digital contract via Odoo Sign</p>
+                                    </div>
+                                </div>
+                                <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+                                <div class="step">
+                                    <div class="step-number">4</div>
+                                    <div class="step-content">
+                                        <h3>Onboarding</h3>
+                                        <p>Portal access &amp; team orientation</p>
+                                    </div>
+                                </div>
+                                <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+                                <div class="step">
+                                    <div class="step-number">5</div>
+                                    <div class="step-content">
+                                        <h3>Start Operations</h3>
+                                        <p>Begin supplying manpower</p>
+                                    </div>
+                                </div>
+                                <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+                                <div class="step">
+                                    <div class="step-number">6</div>
+                                    <div class="step-content">
+                                        <h3>Monthly Billing</h3>
+                                        <p>Transparent, on-time payments</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>                    
+
+                    <section class="section compliance">
+                        <div class="container">
+                            <div class="compliance-box">
+                                <div class="compliance-icon"><i class="fas fa-balance-scale"></i></div>
+                                <div class="compliance-content">
+                                    <h3>Our Commitment to Fair Practices</h3>
+                                    <p>We maintain transparent MGQ agreements with fair downtime logging policies. All attendance and operational data is tracked digitally through our Odoo portal, ensuring accuracy and accountability for both parties.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="section faqs">
+                        <div class="container">
+                            <div class="section-header">
+                                <h2 class="section-title">Frequently Asked Questions</h2>
+                                <p class="section-subtitle">Quick answers to common questions</p>
+                            </div>
+                            <div class="faq-container">
+                                <div class="faq-item">
+                                    <div class="faq-question">
+                                        <h3>What is the payment timeline?</h3>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <p>We process payments on a monthly cycle within 30 days of invoice submission. Digital invoicing through our Odoo portal ensures faster processing.</p>
+                                    </div>
+                                </div>
+                                <div class="faq-item">
+                                    <div class="faq-question">
+                                        <h3>How long does document verification take?</h3>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <p>Document verification typically takes 2-3 business days. The entire onboarding process can be completed within 5-7 business days.</p>
+                                    </div>
+                                </div>
+                                <div class="faq-item">
+                                    <div class="faq-question">
+                                        <h3>How do I access the Odoo portal?</h3>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <p>After contract signing, you'll receive portal login credentials via email, along with training on attendance tracking, billing, and reporting.</p>
+                                    </div>
+                                </div>
+                                <div class="faq-item">
+                                    <div class="faq-question">
+                                        <h3>What are the contract renewal criteria?</h3>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <p>Renewals are based on performance metrics including attendance consistency, staff quality, safety compliance, and timely reporting.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <a href="#apply" class="sticky-apply-btn">
+                        <i class="fas fa-handshake"></i>
+                        <span>Apply Now</span>
+                    </a>
+
+                </div>
+        </template>
+    </data>
+</odoo>
